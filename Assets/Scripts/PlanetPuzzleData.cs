@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class PlanetPuzzleData
 {
     public string PlanetPrefabName;
+    public float PlanetRadius;
     public List<SphereCoordinate> RadioTowerCoordinates;
     public List<SphereCoordinate> SatelliteCoordinates;
     public int CompletionPercentage;
@@ -31,7 +32,8 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
 {
     public TestPlanetPuzzleData()
     {
-        PlanetPrefabName = "PlanetTest";
+        PlanetPrefabName = "PlanetBlueGreen";
+        PlanetRadius = 1;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(0, 0),
