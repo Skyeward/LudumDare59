@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PlanetPuzzleController : MonoBehaviour
 {
+    public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
+    public float PuzzleDistanceToRotate = 0f;
+    private float _rotationSmoothing = 5f;
     
     
     public void SetUpPuzzle(PlanetPuzzleData puzzleData)
@@ -31,5 +34,13 @@ public class PlanetPuzzleController : MonoBehaviour
         {
             // MAKE THE SATELLITES!
         }
+    }
+    
+    
+    public void RotatePuzzle()
+    {
+        float distanceToRotate = PuzzleDistanceToRotate * _rotationSmoothing * Time.deltaTime;
+        PuzzleDistanceToRotate = PuzzleDistanceToRotate - distanceToRotate;
+        PuzzleParentTransform.Rotate(0, distanceToRotate, 0);
     }
 }

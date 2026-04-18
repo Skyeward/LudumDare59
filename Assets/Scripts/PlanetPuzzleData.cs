@@ -33,11 +33,14 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         PlanetPrefabName = "PlanetTest";
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
-            new SphereCoordinate(170, 10)
+            new SphereCoordinate(0, 0),
+            new SphereCoordinate(0, 2),
+            //new SphereCoordinate(0, 45)
         };
         SatelliteCoordinates = new List<SphereCoordinate>()
         {
-            new SphereCoordinate(10, 10)
+            new SphereCoordinate(10, 10),
+            new SphereCoordinate(20, 20)
         };
     }
 }
