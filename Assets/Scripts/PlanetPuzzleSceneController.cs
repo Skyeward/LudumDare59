@@ -22,10 +22,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         SaveMousePosition();
         SetRotationInteractionFlags();
+        
+        TryUpdateSatelliteOrbRotationDistance();
         TryUpdatePuzzleRotationDistance();
-        //try updates satellites
+        
+        _planetPuzzleController.RotateSatelliteOrb();
         _planetPuzzleController.RotatePuzzle();
-        //rotate satellites
     }
     
     
@@ -44,16 +46,19 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         if (!Input.GetMouseButton(0))
         {
+            Debug.Log("Stopped rotating satellite orb");
             _isRotatingSatelliteOrb = false;
         }
         
         if (!Input.GetMouseButton(1))
         {
+            Debug.Log("Stopped rotating puzzle");
             _isRotatingPuzzle = false;
         }
         
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Started rotating satellite orb");
             if (!_isRotatingPuzzle)
             {
                 _isRotatingSatelliteOrb = true;
@@ -61,6 +66,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         {
+            Debug.Log("Started rotating puzzle");
             if (!_isRotatingSatelliteOrb)
             {
                 _isRotatingPuzzle = true;
@@ -76,16 +82,27 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             return;
         }
         
-        float distanceBetweenPreviousMousePositions = Vector3.Distance(_previousMousePositions[1], _previousMousePositions[0]);
+        float distanceBetweenPreviousMousePositions = _previousMousePositions[1].x - _previousMousePositions[0].x;
         distanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
-        
-        if (_previousMousePositions[1].x < _previousMousePositions[0].x)
-        {
-            distanceBetweenPreviousMousePositions *= -1;
-        }
         
         _planetPuzzleController.PuzzleDistanceToRotate += distanceBetweenPreviousMousePositions;
     }
-
-
+    
+    
+    private void TryUpdateSatelliteOrbRotationDistance()
+    {
+        if (!_isRotatingSatelliteOrb || _previousMousePositions.Count < 2)
+        {
+            return;
+        }
+        
+        float xDistanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
+        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        
+        float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
+        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        
+        _planetPuzzleController.SatelliteOrbXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
+        _planetPuzzleController.SatelliteOrbYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
+    }
 }
