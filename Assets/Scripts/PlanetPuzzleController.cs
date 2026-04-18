@@ -9,7 +9,8 @@ public class PlanetPuzzleController : MonoBehaviour
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
     public float SatelliteOrbXDistanceToRotate = 0f;
     public float SatelliteOrbYDistanceToRotate = 0f;
-    public float PuzzleDistanceToRotate = 0f;
+    public float PuzzleXDistanceToRotate = 0f;
+    public float PuzzleYDistanceToRotate = 0f;
     private float _rotationSmoothing = 5f;
     private float _satelliteOrbMeshRadiusMultiplier = 1.4f;
     
@@ -67,8 +68,13 @@ public class PlanetPuzzleController : MonoBehaviour
     
     public void RotatePuzzle()
     {
-        float distanceToRotate = PuzzleDistanceToRotate * _rotationSmoothing * Time.deltaTime;
-        PuzzleDistanceToRotate -= distanceToRotate;
-        PuzzleParentTransform.Rotate(0, distanceToRotate, 0);
+        float xDistanceToRotate = PuzzleXDistanceToRotate * _rotationSmoothing * Time.deltaTime;
+        PuzzleXDistanceToRotate -= xDistanceToRotate;
+        
+        float yDistanceToRotate = PuzzleYDistanceToRotate * _rotationSmoothing * Time.deltaTime;
+        PuzzleYDistanceToRotate -= yDistanceToRotate;
+        
+        PuzzleParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.up, xDistanceToRotate);
+        PuzzleParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.right, yDistanceToRotate);
     }
 }
