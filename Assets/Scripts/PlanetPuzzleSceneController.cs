@@ -46,19 +46,19 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         if (!Input.GetMouseButton(0))
         {
-            Debug.Log("Stopped rotating satellite orb");
+            //Debug.Log("Stopped rotating satellite orb");
             _isRotatingSatelliteOrb = false;
         }
         
         if (!Input.GetMouseButton(1))
         {
-            Debug.Log("Stopped rotating puzzle");
+            //Debug.Log("Stopped rotating puzzle");
             _isRotatingPuzzle = false;
         }
         
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Started rotating satellite orb");
+            //Debug.Log("Started rotating satellite orb");
             if (!_isRotatingPuzzle)
             {
                 _isRotatingSatelliteOrb = true;
@@ -66,11 +66,16 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Started rotating puzzle");
+            //Debug.Log("Started rotating puzzle");
             if (!_isRotatingSatelliteOrb)
             {
                 _isRotatingPuzzle = true;
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log($"Current puzzle completion: {_planetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
         }
     }
     

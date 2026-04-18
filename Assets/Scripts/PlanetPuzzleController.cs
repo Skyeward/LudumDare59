@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PlanetPuzzleController : MonoBehaviour
 {
+    public PlanetPuzzleData CurrentPuzzleData;
     public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
@@ -20,6 +21,7 @@ public class PlanetPuzzleController : MonoBehaviour
     
     public void SetUpPuzzle(PlanetPuzzleData puzzleData)
     {
+        CurrentPuzzleData = puzzleData;
         GameObject planetInstance = Instantiate(Resources.Load($"Planets/{puzzleData.PlanetPrefabName}")) as GameObject;
         planetInstance.transform.parent = PlanetParentTransform;
         
@@ -79,7 +81,7 @@ public class PlanetPuzzleController : MonoBehaviour
     }
 
 
-    public int CalculateCurrentPuzzleCompletionPercentage(PlanetPuzzleData puzzleData)
+    public int CalculateCurrentPuzzleCompletionPercentage()
     {
         List<Vector3> towerPositions = new List<Vector3>();
         List<Vector3> satellitePositions = new List<Vector3>();
@@ -114,7 +116,7 @@ public class PlanetPuzzleController : MonoBehaviour
             totalDistance += costMatrix[i, assignment[i]];
         }
 
-        float maxDistance = puzzleData.PlanetRadius * 2f * n; // rough upper bound
+        float maxDistance = CurrentPuzzleData.PlanetRadius * 2f * n; // rough upper bound
         float score = 1f - (totalDistance / maxDistance);
         score = Mathf.Clamp01(score);
 
