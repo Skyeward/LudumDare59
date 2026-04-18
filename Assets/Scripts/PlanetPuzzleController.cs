@@ -6,7 +6,6 @@ public class PlanetPuzzleController : MonoBehaviour
     public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
-    public Rigidbody SatelliteParentRb;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
     public float SatelliteOrbXDistanceToRotate = 0f;
     public float SatelliteOrbYDistanceToRotate = 0f;
@@ -22,12 +21,12 @@ public class PlanetPuzzleController : MonoBehaviour
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshScale = puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x;
-        satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshScale, satelliteOrbMeshScale, satelliteOrbMeshScale);
+        float satelliteOrbMeshRadius = puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x;
+        satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
         foreach (SphereCoordinate radioTowerCoord in puzzleData.RadioTowerCoordinates)
         {
-            GameObject radioTower = Instantiate(Resources.Load($"RadioTower")) as GameObject;
+            GameObject radioTower = Instantiate(Resources.Load("RadioTower")) as GameObject;
             radioTower.transform.parent = planetInstance.transform;
             
             radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, puzzleData.PlanetRadius);
@@ -40,7 +39,15 @@ public class PlanetPuzzleController : MonoBehaviour
         
         foreach (SphereCoordinate satelliteCoord in puzzleData.SatelliteCoordinates)
         {
-            // MAKE THE SATELLITES!
+            GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
+            satellite.transform.parent = SatelliteParentTransform;
+            
+            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            
+            satellite.transform.LookAt(planetInstance.transform);
+            Quaternion currentRotation = satellite.transform.rotation;
+            Quaternion newRotation = currentRotation * Quaternion.Euler(270, 0, 0);
+            satellite.transform.rotation = newRotation;
         }
     }
     
