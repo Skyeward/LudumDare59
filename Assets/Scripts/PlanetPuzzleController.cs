@@ -55,8 +55,6 @@ public class PlanetPuzzleController : MonoBehaviour
         
         SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.up, xDistanceToRotate);
         SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.right, yDistanceToRotate);
-        // SatelliteParentRb.AddTorque(Vector3.up * xDistanceToRotate);
-        // SatelliteParentRb.AddTorque(Vector3.right * yDistanceToRotate);
     }
     
     
