@@ -22,10 +22,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         SaveMousePosition();
         SetRotationInteractionFlags();
+        
+        TryUpdateSatelliteOrbRotationDistance();
         TryUpdatePuzzleRotationDistance();
-        //try updates satellites
+        
+        _planetPuzzleController.RotateSatelliteOrb();
         _planetPuzzleController.RotatePuzzle();
-        //rotate satellites
     }
     
     
@@ -76,14 +78,27 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             return;
         }
         
-        float distanceBetweenPreviousMousePositions = Vector3.Distance(_previousMousePositions[1], _previousMousePositions[0]);
+        float distanceBetweenPreviousMousePositions = _previousMousePositions[1].x - _previousMousePositions[0].x;
         distanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
         
-        if (_previousMousePositions[1].x < _previousMousePositions[0].x)
+        _planetPuzzleController.PuzzleDistanceToRotate += distanceBetweenPreviousMousePositions;
+    }
+    
+    
+    private void TryUpdateSatelliteOrbRotationDistance()
+    {
+        if (!_isRotatingSatelliteOrb || _previousMousePositions.Count < 2)
         {
-            distanceBetweenPreviousMousePositions *= -1;
+            return;
         }
         
-        _planetPuzzleController.PuzzleDistanceToRotate += distanceBetweenPreviousMousePositions;
+        float xDistanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
+        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        
+        float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
+        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        
+        _planetPuzzleController.SatelliteOrbXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
+        _planetPuzzleController.SatelliteOrbYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
     }
 }
