@@ -82,7 +82,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             return;
         }
         
-        float distanceBetweenPreviousMousePositions = _previousMousePositions[1].x - _previousMousePositions[0].x;
+        float distanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
         distanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
         
         _planetPuzzleController.PuzzleDistanceToRotate += distanceBetweenPreviousMousePositions;
