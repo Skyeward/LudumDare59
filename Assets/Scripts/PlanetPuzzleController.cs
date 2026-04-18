@@ -94,6 +94,6 @@ public class PlanetPuzzleController : MonoBehaviour
         float score = 1f - (totalDistance / maxDistance);
         score = Mathf.Clamp01(score);
 
-        int percentage = Mathf.RoundToInt(score * 100f);
+        return Mathf.RoundToInt(score * 100f);
     }
 }
