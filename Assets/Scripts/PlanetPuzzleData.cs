@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 
 public class PlanetPuzzleData
@@ -15,11 +14,11 @@ public class PlanetPuzzleData
 //     public TestPlanetPuzzleData()
 //     {
 //         PlanetPrefabName = "";
-//         List<SphereCoordinate> RadioTowerCoordinates = new List<SphereCoordinate>()
+//         RadioTowerCoordinates = new List<SphereCoordinate>()
 //         {
             
 //         };
-//         List<SphereCoordinate> SatelliteCoordinates = new List<SphereCoordinate>()
+//         SatelliteCoordinates = new List<SphereCoordinate>()
 //         {
             
 //         };
@@ -32,11 +31,11 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
     public TestPlanetPuzzleData()
     {
         PlanetPrefabName = "PlanetTest";
-        List<SphereCoordinate> RadioTowerCoordinates = new List<SphereCoordinate>()
+        RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(170, 10)
         };
-        List<SphereCoordinate> SatelliteCoordinates = new List<SphereCoordinate>()
+        SatelliteCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(10, 10)
         };
