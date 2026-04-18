@@ -78,10 +78,14 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             return;
         }
         
-        float distanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
-        distanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        float xDistanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
+        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
         
-        _planetPuzzleController.PuzzleDistanceToRotate += distanceBetweenPreviousMousePositions;
+        float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
+        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        
+        _planetPuzzleController.PuzzleXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
+        _planetPuzzleController.PuzzleYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
     }
     
     
