@@ -6,6 +6,7 @@ public class PlanetPuzzleData
     public string PlanetPrefabName;
     public List<SphereCoordinate> RadioTowerCoordinates;
     public List<SphereCoordinate> SatelliteCoordinates;
+    public int CompletionPercentage;
 }
 
 
