@@ -6,7 +6,10 @@ public class PlanetPuzzleController : MonoBehaviour
     public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
+    public Rigidbody SatelliteParentRb;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
+    public float SatelliteOrbXDistanceToRotate = 0f;
+    public float SatelliteOrbYDistanceToRotate = 0f;
     public float PuzzleDistanceToRotate = 0f;
     private float _rotationSmoothing = 5f;
     private float _satelliteOrbMeshRadiusMultiplier = 1.4f;
@@ -18,7 +21,7 @@ public class PlanetPuzzleController : MonoBehaviour
         planetInstance.transform.parent = PlanetParentTransform;
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
-        satelliteOrbMeshInstance.transform.parent = PlanetParentTransform;
+        satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
         float satelliteOrbMeshScale = puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshScale, satelliteOrbMeshScale, satelliteOrbMeshScale);
 
@@ -42,10 +45,25 @@ public class PlanetPuzzleController : MonoBehaviour
     }
     
     
+    public void RotateSatelliteOrb()
+    {
+        float xDistanceToRotate = SatelliteOrbXDistanceToRotate * _rotationSmoothing * Time.deltaTime;
+        SatelliteOrbXDistanceToRotate -= xDistanceToRotate;
+        
+        float yDistanceToRotate = SatelliteOrbYDistanceToRotate * _rotationSmoothing * Time.deltaTime;
+        SatelliteOrbYDistanceToRotate -= yDistanceToRotate;
+        
+        SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.up, xDistanceToRotate);
+        SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.right, yDistanceToRotate);
+        // SatelliteParentRb.AddTorque(Vector3.up * xDistanceToRotate);
+        // SatelliteParentRb.AddTorque(Vector3.right * yDistanceToRotate);
+    }
+    
+    
     public void RotatePuzzle()
     {
         float distanceToRotate = PuzzleDistanceToRotate * _rotationSmoothing * Time.deltaTime;
-        PuzzleDistanceToRotate = PuzzleDistanceToRotate - distanceToRotate;
+        PuzzleDistanceToRotate -= distanceToRotate;
         PuzzleParentTransform.Rotate(0, distanceToRotate, 0);
     }
 }
