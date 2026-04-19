@@ -39,7 +39,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             CheckPlanetRaycasts();
         }
 
-        if (CurrentGameThreadStage == GameThreadStage.SolvingPuzzle || CurrentGameThreadStage == GameThreadStage.ShowingSolution || CurrentGameThreadStage == GameThreadStage.AnimatingSolution)
+        if (CurrentGameThreadStage == GameThreadStage.SolvingPuzzle || CurrentGameThreadStage == GameThreadStage.AnimatingSolution)
         {
             PuzzleButton button = CheckButtonRaycasts();
             
@@ -47,9 +47,18 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             {
                 _previousMousePositions.Clear();
                 
-                if (Input.GetMouseButtonDown(0) && button.MyButtonType == ButtonType.LeavePuzzle)
+                if (Input.GetMouseButtonDown(0) && CurrentGameThreadStage == GameThreadStage.SolvingPuzzle)
                 {
-                    StartCoroutine(LeavePuzzle(button.MyController));
+                    if (button.MyButtonType == ButtonType.LeavePuzzle)
+                    {
+                        StartCoroutine(LeavePuzzle(button.MyController));
+                    }
+                    else if (button.MyButtonType == ButtonType.Satellite)
+                    {
+                        int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
+                        Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
+                        _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
+                    }
                 }
             }
             else
@@ -66,14 +75,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             {
                 _currentPlanetPuzzleController.RotateSatelliteOrb();
                 _currentPlanetPuzzleController.RotatePuzzle();
-            }
-            
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
-                Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
-                //_currentPlanetPuzzleController.CurrentPuzzleData.CompletionPercentage = puzzleCompletion;
-                _currentPlanetPuzzleController.ShowSolution();
             }
         }
     }
@@ -273,6 +274,4 @@ public enum GameThreadStage
     WaitingForPlanetSelection,
     SolvingPuzzle, 
     AnimatingSolution,
-    ShowingSolution, 
-
 }

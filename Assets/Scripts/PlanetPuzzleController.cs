@@ -25,7 +25,8 @@ public class PlanetPuzzleController : MonoBehaviour
     [SerializeField] private string _planetDataTypeName;
     [SerializeField] private TextMeshPro _planetDesignationTMP;
     [SerializeField] private TextMeshPro _planetNameTMP;
-    private PlanetPuzzleData _myPuzzleData;
+    [SerializeField] private TextMeshPro _puzzleSignalPercentageTMP;
+    public PlanetPuzzleData MyPuzzleData;
     public TextMeshPro SignalCompletionTMP;
     public SpriteRenderer PlanetSelectionSpriteRenderer;
     [SerializeField] private GameObject _connectionPrefab;
@@ -45,6 +46,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
     private bool _blockingOffsettingRotation = false;
     private bool _markForReset = false;
+    public bool IsShowingSolution = false;
     
     
     public void Start()
@@ -55,20 +57,20 @@ public class PlanetPuzzleController : MonoBehaviour
         // }
         
         MySceneController = FindAnyObjectByType<PlanetPuzzleSceneController>();
-        _myPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
-        SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + _myPuzzleData.PlanetRadius));
-        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius);
+        MyPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
+        SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + MyPuzzleData.PlanetRadius));
+        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * MyPuzzleData.PlanetRadius, 0.75f * MyPuzzleData.PlanetRadius, 0.75f * MyPuzzleData.PlanetRadius);
         
-        float scaleSize = _myPuzzleData.CameraDistance / 5.8f;
+        float scaleSize = MyPuzzleData.CameraDistance / 5.8f;
         Vector3 scale = new Vector3(scaleSize, scaleSize, scaleSize);
         
-        _buttonsParentGO.transform.localPosition = new Vector3(_myPuzzleData.CameraDistance / 1.77f, -_myPuzzleData.CameraDistance / 6f);
+        _buttonsParentGO.transform.localPosition = new Vector3(MyPuzzleData.CameraDistance / 1.77f, -MyPuzzleData.CameraDistance / 6f);
         _buttonsParentGO.transform.localScale = scale;
-        _puzzleCanvasRT.anchoredPosition = new Vector2(_myPuzzleData.CameraDistance / 1.77f, 0);
+        _puzzleCanvasRT.anchoredPosition = new Vector2(MyPuzzleData.CameraDistance / 1.77f, 0);
         _puzzleCanvasRT.localScale = scale;
         
-        _planetNameTMP.SetText(_myPuzzleData.PlanetName);
-        _planetDesignationTMP.SetText($"DESIGNATION {_myPuzzleData.PlanetDesignation}");
+        _planetNameTMP.SetText(MyPuzzleData.PlanetName);
+        _planetDesignationTMP.SetText($"DESIGNATION {MyPuzzleData.PlanetDesignation}");
         
         SetUpPuzzle();
     }
@@ -92,7 +94,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
     public void HideSolution()
     {
-        if (MySceneController.CurrentGameThreadStage == GameThreadStage.ShowingSolution)
+        if (IsShowingSolution && MySceneController.CurrentGameThreadStage == GameThreadStage.SolvingPuzzle)
         {
             ExitSolutionView();
         }
@@ -129,15 +131,15 @@ public class PlanetPuzzleController : MonoBehaviour
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshRadius = _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * PlanetParentTransform.localScale.x / 100f;
+        float satelliteOrbMeshRadius = MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * PlanetParentTransform.localScale.x / 100f;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
-        foreach (SphereCoordinate radioTowerCoord in _myPuzzleData.RadioTowerCoordinates)
+        foreach (SphereCoordinate radioTowerCoord in MyPuzzleData.RadioTowerCoordinates)
         {
             GameObject radioTower = Instantiate(Resources.Load("RadioTower")) as GameObject;
             radioTower.transform.parent = PlanetParentTransform;
             
-            radioTower.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, _myPuzzleData.PlanetRadius);
+            radioTower.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, MyPuzzleData.PlanetRadius);
             
             radioTower.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = radioTower.transform.rotation;
@@ -146,12 +148,12 @@ public class PlanetPuzzleController : MonoBehaviour
             RadioTowers.Add(radioTower);
         }
         
-        foreach (SphereCoordinate satelliteCoord in _myPuzzleData.SatelliteCoordinates)
+        foreach (SphereCoordinate satelliteCoord in MyPuzzleData.SatelliteCoordinates)
         {
             GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
             
             satellite.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = satellite.transform.rotation;
@@ -214,10 +216,12 @@ public class PlanetPuzzleController : MonoBehaviour
 
     private Coroutine _solutionRoutine;
 
-    public void ShowSolution()
+    public void ShowSolution(int completionPercentage)
     {
-        if (MySceneController.CurrentGameThreadStage != GameThreadStage.SolvingPuzzle)
+        if (MySceneController.CurrentGameThreadStage != GameThreadStage.SolvingPuzzle || IsShowingSolution)
+        {
             return;
+        }
 
         if (_solutionRoutine != null)
         {
@@ -225,12 +229,14 @@ public class PlanetPuzzleController : MonoBehaviour
         }
 
         MySceneController.CurrentGameThreadStage = GameThreadStage.AnimatingSolution;
-        _solutionRoutine = StartCoroutine(DisplayCurrentAssignment());
+        _solutionRoutine = StartCoroutine(DisplayCurrentAssignment(completionPercentage));
     }
 
 
-    public IEnumerator  DisplayCurrentAssignment()
+    public IEnumerator DisplayCurrentAssignment(int completionPercentage)
     {
+        IsShowingSolution = true;
+        
         foreach(SatelliteController sc in SatelliteParentTransform.GetComponentsInChildren<SatelliteController>())
         {
             sc.HideGuideLine();
@@ -242,14 +248,19 @@ public class PlanetPuzzleController : MonoBehaviour
         {
             pair.Tower.GetComponentInChildren<RadioTowerController>().StartPulsingSignal();
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
-            DrawConnection(pair, _myPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
+            DrawConnection(pair, MyPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
             yield return new WaitForSeconds(1.5f);
             pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal(pair.Distance.ToString("F2"));
             yield return new WaitForSeconds(0.5f);
         }
 
-        MySceneController.CurrentGameThreadStage = GameThreadStage.ShowingSolution;
+        MyPuzzleData.CompletionPercentage = completionPercentage;
+        _puzzleSignalPercentageTMP.SetText($"{completionPercentage}% SIGNAL");
+        SignalCompletionTMP.SetText($"{completionPercentage}% SIGNAL");
+        
+        MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
+
 
     public void ExitSolutionView()
     {
@@ -262,7 +273,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
         foreach (GameObject tower in RadioTowers)
         {
-                tower.GetComponentInChildren<RadioTowerController>()?.StopPulsingSignal();
+            tower.GetComponentInChildren<RadioTowerController>()?.StopPulsingSignal();
         }
 
         foreach (GameObject sat in Satellites)
@@ -272,126 +283,125 @@ public class PlanetPuzzleController : MonoBehaviour
         }
 
         _blockingOffsettingRotation = false;
-        MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
+        IsShowingSolution = false;
     }
 
 
-
-public void DrawConnection(TowerSatellitePair pair, float maxDistance)
-{
-    Debug.Log($"DRAW CONNECTION: {pair.Tower.name} → {pair.Satellite.name}");
-
-    GameObject lineObj = Instantiate(_connectionPrefab);
-    lineObj.transform.SetParent(PuzzleParentTransform, true);
-
-    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
-    var mat = Instantiate(lr.material);
-    lr.material = mat;
-    lr.useWorldSpace = true;
-    lr.textureMode = LineTextureMode.Tile;
-    lr.alignment = LineAlignment.View;
-    lr.positionCount = 1;
-    lr.SetPosition(0, pair.Tower.transform.position);
-
-    float t = pair.Distance / maxDistance;
-    Color baseColor = Color.Lerp(Color.yellow, Color.orange, t);
-
-    lr.startColor = baseColor;
-    lr.endColor = baseColor;
-
-    var towerAnchor = pair.Tower.GetComponentInChildren<RadioTowerController>().SignalSphere.transform;
-    var satelliteAnchor = pair.Satellite.GetComponentInChildren<SatelliteController>().SignalSphere.transform;
-    Debug.Log($"TOWER: {towerAnchor.position} | SAT: {satelliteAnchor.position}");
-
-    _activeConnections.Add(new ActiveConnection
+    public void DrawConnection(TowerSatellitePair pair, float maxDistance)
     {
-        Line = lr,
-        Tower = towerAnchor,
-        Satellite = satelliteAnchor,
-        Center = PuzzleParentTransform,
-        Distance = pair.Distance,
-        MaxDistance = maxDistance,
-        Alpha = 0f,
-        Progress = 0f
-    });
-}
+        Debug.Log($"DRAW CONNECTION: {pair.Tower.name} → {pair.Satellite.name}");
 
+        GameObject lineObj = Instantiate(_connectionPrefab);
+        lineObj.transform.SetParent(PuzzleParentTransform, true);
 
-private void UpdateConnections()
-{
-    foreach (var c in _activeConnections)
-    {
-        if (c.Line == null || c.Tower == null || c.Satellite == null || c.Center == null)
-            continue;
+        LineRenderer lr = lineObj.GetComponent<LineRenderer>();
+        var mat = Instantiate(lr.material);
+        lr.material = mat;
+        lr.useWorldSpace = true;
+        lr.textureMode = LineTextureMode.Tile;
+        lr.alignment = LineAlignment.View;
+        lr.positionCount = 1;
+        lr.SetPosition(0, pair.Tower.transform.position);
 
-        float offset = (Time.time * scrollSpeed) + (c.Distance * 0.01f);
-        c.Line.material.mainTextureOffset = new Vector2(offset, 0f);
+        float t = pair.Distance / maxDistance;
+        Color baseColor = Color.Lerp(Color.yellow, Color.orange, t);
 
+        lr.startColor = baseColor;
+        lr.endColor = baseColor;
 
-        c.Alpha = Mathf.Clamp01(c.Alpha + Time.deltaTime * _fadeSpeed);
+        var towerAnchor = pair.Tower.GetComponentInChildren<RadioTowerController>().SignalSphere.transform;
+        var satelliteAnchor = pair.Satellite.GetComponentInChildren<SatelliteController>().SignalSphere.transform;
+        Debug.Log($"TOWER: {towerAnchor.position} | SAT: {satelliteAnchor.position}");
 
-        Color baseColor = Color.Lerp(Color.yellow, Color.orange, c.Distance / c.MaxDistance);
-        Color finalColor = new Color(baseColor.r, baseColor.g, baseColor.b, c.Alpha);
-
-        c.Line.startColor = finalColor;
-        c.Line.endColor = finalColor;
-
-
-        Vector3[] arc = BuildRadialSphereArc(
-            c.Tower.position,
-            c.Satellite.position,
-            c.Center.position,
-            _segments
-        );
-
-
-        float duration = Mathf.Lerp(0.5f, 2.0f, c.Distance / c.MaxDistance);
-        c.Progress = Mathf.Clamp01(c.Progress + Time.deltaTime / duration);
-
-        float eased = Mathf.SmoothStep(0f, 1f, c.Progress);
-
-        int lastIndex = Mathf.FloorToInt(_segments * eased);
-        lastIndex = Mathf.Clamp(lastIndex, 1, _segments);
-
-
-        c.Line.positionCount = lastIndex + 1;
-
-
-        for (int i = 0; i <= lastIndex; i++)
+        _activeConnections.Add(new ActiveConnection
         {
-            c.Line.SetPosition(i, arc[i]);
+            Line = lr,
+            Tower = towerAnchor,
+            Satellite = satelliteAnchor,
+            Center = PuzzleParentTransform,
+            Distance = pair.Distance,
+            MaxDistance = maxDistance,
+            Alpha = 0f,
+            Progress = 0f
+        });
+    }
+
+
+    private void UpdateConnections()
+    {
+        foreach (var c in _activeConnections)
+        {
+            if (c.Line == null || c.Tower == null || c.Satellite == null || c.Center == null)
+                continue;
+
+            float offset = (Time.time * scrollSpeed) + (c.Distance * 0.01f);
+            c.Line.material.mainTextureOffset = new Vector2(offset, 0f);
+
+
+            c.Alpha = Mathf.Clamp01(c.Alpha + Time.deltaTime * _fadeSpeed);
+
+            Color baseColor = Color.Lerp(Color.yellow, Color.orange, c.Distance / c.MaxDistance);
+            Color finalColor = new Color(baseColor.r, baseColor.g, baseColor.b, c.Alpha);
+
+            c.Line.startColor = finalColor;
+            c.Line.endColor = finalColor;
+
+
+            Vector3[] arc = BuildRadialSphereArc(
+                c.Tower.position,
+                c.Satellite.position,
+                c.Center.position,
+                _segments
+            );
+
+
+            float duration = Mathf.Lerp(0.5f, 2.0f, c.Distance / c.MaxDistance);
+            c.Progress = Mathf.Clamp01(c.Progress + Time.deltaTime / duration);
+
+            float eased = Mathf.SmoothStep(0f, 1f, c.Progress);
+
+            int lastIndex = Mathf.FloorToInt(_segments * eased);
+            lastIndex = Mathf.Clamp(lastIndex, 1, _segments);
+
+
+            c.Line.positionCount = lastIndex + 1;
+
+
+            for (int i = 0; i <= lastIndex; i++)
+            {
+                c.Line.SetPosition(i, arc[i]);
+            }
         }
     }
-}
 
 
-private Vector3[] BuildRadialSphereArc(
-    Vector3 start,
-    Vector3 end,
-    Vector3 center,
-    int segments)
-{
-    Vector3[] points = new Vector3[segments + 1];
-
-    Vector3 dirA = (start - center).normalized;
-    Vector3 dirB = (end - center).normalized;
-
-    float radiusA = Vector3.Distance(start, center);
-    float radiusB = Vector3.Distance(end, center);
-
-    for (int i = 0; i <= segments; i++)
+    private Vector3[] BuildRadialSphereArc(
+        Vector3 start,
+        Vector3 end,
+        Vector3 center,
+        int segments)
     {
-        float t = (float)i / segments;
+        Vector3[] points = new Vector3[segments + 1];
 
-        Vector3 dir = Vector3.Slerp(dirA, dirB, t).normalized;
+        Vector3 dirA = (start - center).normalized;
+        Vector3 dirB = (end - center).normalized;
 
-        float radius = Mathf.Lerp(radiusA, radiusB, t);
+        float radiusA = Vector3.Distance(start, center);
+        float radiusB = Vector3.Distance(end, center);
 
-        points[i] = center + dir * radius;
+        for (int i = 0; i <= segments; i++)
+        {
+            float t = (float)i / segments;
+
+            Vector3 dir = Vector3.Slerp(dirA, dirB, t).normalized;
+
+            float radius = Mathf.Lerp(radiusA, radiusB, t);
+
+            points[i] = center + dir * radius;
+        }
+
+        return points;
     }
-
-    return points;
-}
 
 
     public int CalculateCurrentPuzzleCompletion()    
@@ -446,7 +456,7 @@ private Vector3[] BuildRadialSphereArc(
             totalDistance += costMatrix[i, assignment[i]];
         }
 
-        float maxDistance = _myPuzzleData.PlanetRadius * 2f * n; // rough upper bound
+        float maxDistance = MyPuzzleData.PlanetRadius * 2f * n; // rough upper bound
         float score = 1f - (totalDistance / maxDistance);
         score = Mathf.Clamp01(score);
 
@@ -456,7 +466,7 @@ private Vector3[] BuildRadialSphereArc(
 
     public Vector3 GetCameraPosition()
     {
-        return PuzzleParentTransform.transform.position + new Vector3(_myPuzzleData.CameraDistance * 0.25f, 0, -_myPuzzleData.CameraDistance);
+        return PuzzleParentTransform.transform.position + new Vector3(MyPuzzleData.CameraDistance * 0.25f, 0, -MyPuzzleData.CameraDistance);
     }
     
     
