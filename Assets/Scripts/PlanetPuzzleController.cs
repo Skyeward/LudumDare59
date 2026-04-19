@@ -69,6 +69,8 @@ public class PlanetPuzzleController : MonoBehaviour
         
         _planetNameTMP.SetText(_myPuzzleData.PlanetName);
         _planetDesignationTMP.SetText($"DESIGNATION {_myPuzzleData.PlanetDesignation}");
+        
+        SetUpPuzzle();
     }
 
 
@@ -122,22 +124,22 @@ public class PlanetPuzzleController : MonoBehaviour
     
     public void SetUpPuzzle()
     {
-        GameObject planetInstance = Instantiate(Resources.Load($"Planets/{_myPuzzleData.PlanetPrefabName}")) as GameObject;
-        planetInstance.transform.parent = PlanetParentTransform;
+        // GameObject planetInstance = Instantiate(Resources.Load($"Planets/{_myPuzzleData.PlanetPrefabName}")) as GameObject;
+        // planetInstance.transform.parent = PlanetParentTransform;
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshRadius = _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x / 100f;
+        float satelliteOrbMeshRadius = _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * PlanetParentTransform.localScale.x / 100f;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
         foreach (SphereCoordinate radioTowerCoord in _myPuzzleData.RadioTowerCoordinates)
         {
             GameObject radioTower = Instantiate(Resources.Load("RadioTower")) as GameObject;
-            radioTower.transform.parent = planetInstance.transform;
+            radioTower.transform.parent = PlanetParentTransform;
             
-            radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, _myPuzzleData.PlanetRadius);
+            radioTower.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, _myPuzzleData.PlanetRadius);
             
-            radioTower.transform.LookAt(planetInstance.transform);
+            radioTower.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = radioTower.transform.rotation;
             Quaternion newRotation = currentRotation * Quaternion.Euler(270, 0, 0);
             radioTower.transform.rotation = newRotation;
@@ -149,9 +151,9 @@ public class PlanetPuzzleController : MonoBehaviour
             GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
             
-            satellite.transform.LookAt(planetInstance.transform);
+            satellite.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = satellite.transform.rotation;
             Quaternion newRotation = currentRotation * Quaternion.Euler(270, 0, 0);
             satellite.transform.rotation = newRotation;
