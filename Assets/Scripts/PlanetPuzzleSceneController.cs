@@ -8,6 +8,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
 {
     [SerializeField] private List<PlanetPuzzleController> _planetPuzzleControllers;
     [SerializeField] private LayerMask _planetLayerMask;
+    [SerializeField] private LayerMask _puzzleButtonLayerMask;
     [SerializeField] private AnimationCurve _cameraSlideCurve;
     private PlanetPuzzleController _currentPlanetPuzzleController;
     
@@ -39,11 +40,20 @@ public class PlanetPuzzleSceneController : MonoBehaviour
 
         if (_currentGameThreadStage == GameThreadStage.SolvingPuzzle)
         {
-            SaveMousePosition();
-            SetRotationInteractionFlags();
+            bool isClickingButton = CheckButtonRaycasts();
             
-            TryUpdateSatelliteOrbRotationDistance();
-            TryUpdatePuzzleRotationDistance();
+            if (isClickingButton)
+            {
+                _previousMousePositions.Clear();
+            }
+            else
+            {
+                SaveMousePosition();
+                SetRotationInteractionFlags();
+                
+                TryUpdateSatelliteOrbRotationDistance();
+                TryUpdatePuzzleRotationDistance();
+            }
             
             _currentPlanetPuzzleController.RotateSatelliteOrb();
             _currentPlanetPuzzleController.RotatePuzzle();
@@ -169,6 +179,26 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         {
             StartCoroutine(SelectPlanetPuzzle(hoveredPlanetPuzzleController));
         }
+    }
+    
+    
+    private bool CheckButtonRaycasts()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        bool isClickingButton = false;
+        //PlanetPuzzleController hoveredPlanetPuzzleController = null;
+
+        if (Physics.Raycast(ray, out hit, _puzzleButtonLayerMask))
+        {
+            //hoveredPlanetPuzzleController = hit.transform.gameObject.GetComponentInParent<PlanetPuzzleController>();
+            
+            Debug.Log($"Clicked: {hit.transform.gameObject.name}");
+            
+            isClickingButton = true;
+        }
+        
+        return isClickingButton;
     }
     
     

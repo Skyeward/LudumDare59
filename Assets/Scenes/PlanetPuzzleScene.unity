@@ -154,6 +154,33 @@ MonoBehaviour:
   _planetLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  _puzzleButtonLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _cameraSlideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &752336905
 Transform:
   m_ObjectHideFlags: 0
@@ -525,6 +552,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2602756759683744675, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5144939093687846787, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 9135006015184442439, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1295327873567833084, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
 --- !u!4 &1031551696 stripped
 Transform:
@@ -672,6 +708,15 @@ PrefabInstance:
       addedObject: {fileID: 1472240151}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2602756759683744675, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5144939093687846787, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 9135006015184442439, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1295327873567833084, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
