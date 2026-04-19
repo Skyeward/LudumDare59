@@ -446,11 +446,18 @@ private Vector3[] BuildRadialSphereArc(
             totalDistance += costMatrix[i, assignment[i]];
         }
 
-        float maxDistance = _myPuzzleData.PlanetRadius * 2f * n; // rough upper bound
-        float score = 1f - (totalDistance / maxDistance);
-        score = Mathf.Clamp01(score);
+        // Use precomputed values from your puzzle data
+        float best = _myPuzzleData.BestSolutionDistance;
+        float worst = _myPuzzleData.WorstSolutionDistance;
 
-        return Mathf.RoundToInt(score * 100f);
+        // Avoid divide-by-zero (important for tiny puzzles)
+        float range = Mathf.Max(0.0001f, worst - best);
+
+        // Normalize (invert because lower distance = better)
+        float score01 = (worst - totalDistance) / range;
+        score01 = Mathf.Clamp01(score01);
+
+        return Mathf.RoundToInt(score01 * 100f);
     }
 
 
