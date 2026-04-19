@@ -106,7 +106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: XX% SIGNAL
+  m_text: 0% SIGNAL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a1191e2b4595ae4093cf1d39c4ee955, type: 2}
   m_sharedMaterial: {fileID: -1280557854815297498, guid: 6a1191e2b4595ae4093cf1d39c4ee955, type: 2}
@@ -1320,6 +1320,7 @@ MonoBehaviour:
   _planetDataTypeName: 
   _planetDesignationTMP: {fileID: 3229631852123910458}
   _planetNameTMP: {fileID: 7705486144700919641}
+  _puzzleSignalPercentageTMP: {fileID: 5211651738795276123}
   SignalCompletionTMP: {fileID: 3090177340628494046}
   PlanetSelectionSpriteRenderer: {fileID: 2496882839185274318}
   _connectionPrefab: {fileID: 4798461118133471274, guid: 7d974f8a07b4e5a42a11b8e1e887f1c3, type: 3}
@@ -1331,6 +1332,7 @@ MonoBehaviour:
   _arcHeightMultiplier: 0
   _fadeSpeed: 1
   scrollSpeed: 2
+  IsShowingSolution: 0
 --- !u!1 &9135006015184442439
 GameObject:
   m_ObjectHideFlags: 0
