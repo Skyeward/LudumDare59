@@ -62,7 +62,7 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         PlanetName = "The Test";
         PlanetDesignation = "A1PD-N";
         PlanetRadius = 1.1f;
-        CameraDistance = 3f;
+        CameraDistance = 4.7f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(30, 10),
