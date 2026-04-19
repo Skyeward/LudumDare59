@@ -143,8 +143,10 @@ MonoBehaviour:
   PuzzleParentTransform: {fileID: 5592118065755559010}
   PlanetParentTransform: {fileID: 8236716269718505740}
   SatelliteParentTransform: {fileID: 4646311020010018176}
+  RadioTowers: []
+  Satellites: []
   SatelliteParentRb: {fileID: 0}
-  SatelliteOrbMeshPrefab: {fileID: 0}
+  SatelliteOrbMeshPrefab: {fileID: 4198220518026237287, guid: 897a0b28b3a762b4e93b0cbe6648c28f, type: 3}
   SatelliteOrbXDistanceToRotate: 0
   SatelliteOrbYDistanceToRotate: 0
   PuzzleDistanceToRotate: 0

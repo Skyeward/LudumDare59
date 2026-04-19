@@ -32,12 +32,12 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
 {
     public TestPlanetPuzzleData()
     {
-        PlanetPrefabName = "BlueGreenMatSwirlBetter";
-        PlanetRadius = 1;
+        PlanetPrefabName = "PlanetBlueGreen";
+        PlanetRadius = 0.98f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
-            new SphereCoordinate(0, 0),
-            new SphereCoordinate(0, 5),
+            new SphereCoordinate(30, 10),
+            new SphereCoordinate(10, 30),
         };
         SatelliteCoordinates = new List<SphereCoordinate>()
         {
