@@ -1301,6 +1301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc84c956cb02344c8c34926b84c4220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetPuzzleController
+  MySceneController: {fileID: 0}
   PuzzleParentTransform: {fileID: 5592118065755559010}
   PlanetParentTransform: {fileID: 8236716269718505740}
   SatelliteParentTransform: {fileID: 4646311020010018176}
@@ -1321,10 +1322,15 @@ MonoBehaviour:
   _planetNameTMP: {fileID: 7705486144700919641}
   SignalCompletionTMP: {fileID: 3090177340628494046}
   PlanetSelectionSpriteRenderer: {fileID: 2496882839185274318}
+  _connectionPrefab: {fileID: 4798461118133471274, guid: 7d974f8a07b4e5a42a11b8e1e887f1c3, type: 3}
   SatelliteOrbXDistanceToRotate: 0
   SatelliteOrbYDistanceToRotate: 0
   PuzzleXDistanceToRotate: 0
   PuzzleYDistanceToRotate: 0
+  _segments: 20
+  _arcHeightMultiplier: 0
+  _fadeSpeed: 1
+  scrollSpeed: 2
 --- !u!1 &9135006015184442439
 GameObject:
   m_ObjectHideFlags: 0

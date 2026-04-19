@@ -279,6 +279,7 @@ MonoBehaviour:
   pulseAmplitude: 0.1
   pulseSpeed: 2
   _lightMaterial: {fileID: 2100000, guid: fa4a35f8c46f2d7499e3816ea2f292e3, type: 2}
+  _baseMaterial: {fileID: -876546973899608171, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
   signalRenderer: {fileID: 731078156106419586}
   baseColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   emissionStrength: 3

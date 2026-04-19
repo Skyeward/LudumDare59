@@ -21,24 +21,25 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         new Vector3(2.54f, -0.88f, -7.74f)
     };
-    private GameThreadStage _currentGameThreadStage;
+    public GameThreadStage CurrentGameThreadStage;
     
     
     private void Start()
     {
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
-        _currentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
     
     
     private void Update()
     {
-        if (_currentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
+        if (CurrentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
         {
+            Debug.Log("Waiting for planet selection...");
             CheckPlanetRaycasts();
         }
 
-        if (_currentGameThreadStage == GameThreadStage.SolvingPuzzle)
+        if (CurrentGameThreadStage == GameThreadStage.SolvingPuzzle || CurrentGameThreadStage == GameThreadStage.ShowingSolution || CurrentGameThreadStage == GameThreadStage.AnimatingSolution)
         {
             PuzzleButton button = CheckButtonRaycasts();
             
@@ -69,11 +70,14 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log($"Current puzzle completion: {_currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion()}%");
-                StartCoroutine(_currentPlanetPuzzleController.DisplayCurrentAssignment());
+                int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
+                Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
+                //_currentPlanetPuzzleController.CurrentPuzzleData.CompletionPercentage = puzzleCompletion;
+                _currentPlanetPuzzleController.ShowSolution();
             }
         }
     }
+    
     
     
     private void SaveMousePosition()
@@ -116,9 +120,11 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             //Debug.Log("Started rotating satellite orb");
-            if (!_isRotatingPuzzle)
+            if (!_isRotatingPuzzle && CurrentGameThreadStage != GameThreadStage.AnimatingSolution)
             {
+                _currentPlanetPuzzleController.HideSolution();
                 _isRotatingSatelliteOrb = true;
+                
             }
         }
         
@@ -171,6 +177,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void CheckPlanetRaycasts()
     {
+        Debug.Log("Checking planet raycasts...");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         PlanetPuzzleController hoveredPlanetPuzzleController = null;
@@ -211,7 +218,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private IEnumerator SelectPlanetPuzzle(PlanetPuzzleController selectedPlanetPuzzleController)
     {
-        _currentGameThreadStage = GameThreadStage.InteractionBlocked;
+        CurrentGameThreadStage = GameThreadStage.InteractionBlocked;
         _currentPlanetPuzzleController = selectedPlanetPuzzleController;
         
         foreach (PlanetPuzzleController planetPuzzleController in _planetPuzzleControllers)
@@ -221,7 +228,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         
         yield return StartCoroutine(SlideCamera(selectedPlanetPuzzleController.GetCameraPosition()));
         
-        _currentGameThreadStage = GameThreadStage.SolvingPuzzle;
+        CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
     
     
@@ -245,7 +252,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private IEnumerator LeavePuzzle(PlanetPuzzleController currentPuzzleController)
     {
-        _currentGameThreadStage = GameThreadStage.InteractionBlocked;
+        CurrentGameThreadStage = GameThreadStage.InteractionBlocked;
         _currentPlanetPuzzleController = null;
         
         foreach (PlanetPuzzleController planetPuzzleController in _planetPuzzleControllers)
@@ -255,7 +262,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         
         yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[0]));
         
-        _currentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
 }
 
@@ -264,5 +271,8 @@ public enum GameThreadStage
 {
     InteractionBlocked,
     WaitingForPlanetSelection,
-    SolvingPuzzle
+    SolvingPuzzle, 
+    AnimatingSolution,
+    ShowingSolution, 
+
 }
