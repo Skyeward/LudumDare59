@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 public class PlanetPuzzleController : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlanetPuzzleController : MonoBehaviour
     public List<GameObject> RadioTowers;
     public List<GameObject> Satellites;
     public Rigidbody SatelliteParentRb;
+    [SerializeField] private GameObject _placeholderPlanet;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
     public float SatelliteOrbXDistanceToRotate = 0f;
     public float SatelliteOrbYDistanceToRotate = 0f;
@@ -18,6 +20,15 @@ public class PlanetPuzzleController : MonoBehaviour
     public float PuzzleYDistanceToRotate = 0f;
     private float _rotationSmoothing = 5f;
     private float _satelliteOrbMeshRadiusMultiplier = 1.4f;
+    
+    
+    public void Start()
+    {
+        if (_placeholderPlanet != null)
+        {
+            Destroy(_placeholderPlanet);   
+        }
+    }
     
     
     public void SetUpPuzzle(PlanetPuzzleData puzzleData)
@@ -66,8 +77,18 @@ public class PlanetPuzzleController : MonoBehaviour
         float xDistanceToRotate = SatelliteOrbXDistanceToRotate * _rotationSmoothing * Time.deltaTime;
         SatelliteOrbXDistanceToRotate -= xDistanceToRotate;
         
+        if (Mathf.Abs(SatelliteOrbXDistanceToRotate) < 0.001f)
+        {
+            SatelliteOrbXDistanceToRotate = 0;
+        }
+        
         float yDistanceToRotate = SatelliteOrbYDistanceToRotate * _rotationSmoothing * Time.deltaTime;
         SatelliteOrbYDistanceToRotate -= yDistanceToRotate;
+        
+        if (Mathf.Abs(SatelliteOrbYDistanceToRotate) < 0.001f)
+        {
+            SatelliteOrbYDistanceToRotate = 0;
+        }
         
         SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.up, xDistanceToRotate);
         SatelliteParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.right, yDistanceToRotate);
@@ -79,8 +100,18 @@ public class PlanetPuzzleController : MonoBehaviour
         float xDistanceToRotate = PuzzleXDistanceToRotate * _rotationSmoothing * Time.deltaTime;
         PuzzleXDistanceToRotate -= xDistanceToRotate;
         
+        if (Mathf.Abs(PuzzleXDistanceToRotate) < 0.001f)
+        {
+            PuzzleXDistanceToRotate = 0;
+        }
+        
         float yDistanceToRotate = PuzzleYDistanceToRotate * _rotationSmoothing * Time.deltaTime;
         PuzzleYDistanceToRotate -= yDistanceToRotate;
+        
+        if (Mathf.Abs(PuzzleYDistanceToRotate) < 0.001f)
+        {
+            PuzzleYDistanceToRotate = 0;
+        }
         
         PuzzleParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.up, xDistanceToRotate);
         PuzzleParentTransform.RotateAround(SatelliteParentTransform.position, Vector3.right, yDistanceToRotate);
