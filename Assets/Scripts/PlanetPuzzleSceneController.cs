@@ -48,12 +48,13 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             }
             else
             {
-                SaveMousePosition();
                 SetRotationInteractionFlags();
-                
-                TryUpdateSatelliteOrbRotationDistance();
-                TryUpdatePuzzleRotationDistance();
             }
+            
+            SaveMousePosition();
+            
+            TryUpdateSatelliteOrbRotationDistance();
+            TryUpdatePuzzleRotationDistance();
             
             _currentPlanetPuzzleController.RotateSatelliteOrb();
             _currentPlanetPuzzleController.RotatePuzzle();
@@ -165,7 +166,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         RaycastHit hit;
         PlanetPuzzleController hoveredPlanetPuzzleController = null;
 
-        if (Physics.Raycast(ray, out hit, _planetLayerMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _planetLayerMask))
         {
             hoveredPlanetPuzzleController = hit.transform.gameObject.GetComponentInParent<PlanetPuzzleController>();
         }
@@ -189,7 +190,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         bool isClickingButton = false;
         //PlanetPuzzleController hoveredPlanetPuzzleController = null;
 
-        if (Physics.Raycast(ray, out hit, _puzzleButtonLayerMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _puzzleButtonLayerMask))
         {
             //hoveredPlanetPuzzleController = hit.transform.gameObject.GetComponentInParent<PlanetPuzzleController>();
             

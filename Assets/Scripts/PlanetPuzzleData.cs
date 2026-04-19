@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class PlanetPuzzleData
 {
     public string PlanetPrefabName;
+    public string PlanetName;
+    public string PlanetDesignation;
     public float PlanetRadius;
     public float CameraDistance;
     public List<SphereCoordinate> RadioTowerCoordinates;
@@ -34,6 +36,8 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
     public TestPlanetPuzzleData()
     {
         PlanetPrefabName = "PlanetBlueGreen";
+        PlanetName = "The Pale Bluish Green Dot";
+        PlanetDesignation = "A1GD-M";
         PlanetRadius = 0.98f;
         CameraDistance = 4.5f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
@@ -55,6 +59,8 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
     public TestPlanetPuzzleData2()
     {
         PlanetPrefabName = "PlanetTest";
+        PlanetName = "The Test";
+        PlanetDesignation = "A1PD-N";
         PlanetRadius = 0.5f;
         CameraDistance = 3f;
         RadioTowerCoordinates = new List<SphereCoordinate>()

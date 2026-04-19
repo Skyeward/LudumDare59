@@ -13,10 +13,12 @@ public class PlanetPuzzleController : MonoBehaviour
     public Transform SatelliteParentTransform;
     public List<GameObject> RadioTowers;
     public List<GameObject> Satellites;
-    public Rigidbody SatelliteParentRb;
-    [SerializeField] private GameObject _placeholderPlanet;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
-    [SerializeField] private string _planetDataTypeName; 
+    [SerializeField] private RectTransform _puzzleCanvasRT;
+    [SerializeField] private GameObject _buttonsParentGO;
+    [SerializeField] private string _planetDataTypeName;
+    [SerializeField] private TextMeshPro _planetDesignationTMP;
+    [SerializeField] private TextMeshPro _planetNameTMP;
     private PlanetPuzzleData _myPuzzleData;
     public TextMeshPro SignalCompletionTMP;
     public SpriteRenderer PlanetSelectionSpriteRenderer;
@@ -38,6 +40,13 @@ public class PlanetPuzzleController : MonoBehaviour
         _myPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
         SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + _myPuzzleData.PlanetRadius));
         PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius);
+        
+        _buttonsParentGO.transform.localPosition = new Vector3(_myPuzzleData.CameraDistance / 1.77f, -0.88f);
+        _puzzleCanvasRT.anchoredPosition = new Vector2(_myPuzzleData.CameraDistance / 1.77f, 0);
+        _puzzleCanvasRT.localScale = new Vector3(_myPuzzleData.CameraDistance / 5.8f, _myPuzzleData.CameraDistance / 5.8f, _myPuzzleData.CameraDistance / 5.8f);
+        
+        _planetNameTMP.SetText(_myPuzzleData.PlanetName);
+        _planetDesignationTMP.SetText($"DESIGNATION {_myPuzzleData.PlanetDesignation}");
     }
     
     

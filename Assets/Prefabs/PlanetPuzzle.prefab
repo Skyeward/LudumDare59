@@ -181,6 +181,39 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 7704725655307749971}
   m_maskType: 0
+--- !u!1 &1334899948161401987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3550524814125222478}
+  m_Layer: 0
+  m_Name: ButtonsParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3550524814125222478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334899948161401987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.71, y: -0.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6684957987455674947}
+  - {fileID: 8850388215601236452}
+  m_Father: {fileID: 2560934204842156237}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2602756759683744675
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,7 +633,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2870009839168096406}
   - {fileID: 1466733653749906984}
@@ -991,11 +1024,11 @@ Transform:
   m_GameObject: {fileID: 7335682710821021398}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.65, y: -0.88, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2560934204842156237}
+  m_Father: {fileID: 3550524814125222478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6509837680985332715
 SpriteRenderer:
@@ -1104,11 +1137,11 @@ Transform:
   m_GameObject: {fileID: 7475082817774217507}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.57, y: -0.87, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2560934204842156237}
+  m_Father: {fileID: 3550524814125222478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &407817171998895593
 SpriteRenderer:
@@ -1223,8 +1256,7 @@ Transform:
   - {fileID: 5592118065755559010}
   - {fileID: 460752073938923243}
   - {fileID: 5988660460298314831}
-  - {fileID: 6684957987455674947}
-  - {fileID: 8850388215601236452}
+  - {fileID: 3550524814125222478}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4272994477964448296
@@ -1244,10 +1276,12 @@ MonoBehaviour:
   SatelliteParentTransform: {fileID: 4646311020010018176}
   RadioTowers: []
   Satellites: []
-  SatelliteParentRb: {fileID: 0}
-  _placeholderPlanet: {fileID: 0}
   SatelliteOrbMeshPrefab: {fileID: 4198220518026237287, guid: 897a0b28b3a762b4e93b0cbe6648c28f, type: 3}
+  _puzzleCanvasRT: {fileID: 5988660460298314831}
+  _buttonsParentGO: {fileID: 1334899948161401987}
   _planetDataTypeName: 
+  _planetDesignationTMP: {fileID: 3229631852123910458}
+  _planetNameTMP: {fileID: 7705486144700919641}
   SignalCompletionTMP: {fileID: 3090177340628494046}
   PlanetSelectionSpriteRenderer: {fileID: 2496882839185274318}
   SatelliteOrbXDistanceToRotate: 0
@@ -1289,7 +1323,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.8}
-  m_SizeDelta: {x: 71.56, y: 5}
+  m_SizeDelta: {x: 38.5, y: 7.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7290076959057722512
 MeshRenderer:
@@ -1390,9 +1424,9 @@ MonoBehaviour:
   m_fontSize: 54
   m_fontSizeBase: 54
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 54
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
