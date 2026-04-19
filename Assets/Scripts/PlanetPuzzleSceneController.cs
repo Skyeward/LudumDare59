@@ -39,7 +39,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             CheckPlanetRaycasts();
         }
 
-        if (CurrentGameThreadStage == GameThreadStage.SolvingPuzzle)
+        if (CurrentGameThreadStage == GameThreadStage.SolvingPuzzle || CurrentGameThreadStage == GameThreadStage.ShowingSolution || CurrentGameThreadStage == GameThreadStage.AnimatingSolution)
         {
             PuzzleButton button = CheckButtonRaycasts();
             
@@ -120,7 +120,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             //Debug.Log("Started rotating satellite orb");
-            if (!_isRotatingPuzzle)
+            if (!_isRotatingPuzzle && CurrentGameThreadStage != GameThreadStage.AnimatingSolution)
             {
                 _currentPlanetPuzzleController.HideSolution();
                 _isRotatingSatelliteOrb = true;

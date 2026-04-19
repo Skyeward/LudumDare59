@@ -220,7 +220,9 @@ public class PlanetPuzzleController : MonoBehaviour
             return;
 
         if (_solutionRoutine != null)
+        {
             StopCoroutine(_solutionRoutine);
+        }
 
         MySceneController.CurrentGameThreadStage = GameThreadStage.AnimatingSolution;
         _solutionRoutine = StartCoroutine(DisplayCurrentAssignment());
