@@ -40,11 +40,16 @@ public class PlanetPuzzleSceneController : MonoBehaviour
 
         if (_currentGameThreadStage == GameThreadStage.SolvingPuzzle)
         {
-            bool isClickingButton = CheckButtonRaycasts();
+            PuzzleButton button = CheckButtonRaycasts();
             
-            if (isClickingButton)
+            if (button != null)
             {
                 _previousMousePositions.Clear();
+                
+                if (Input.GetMouseButtonDown(0) && button.MyButtonType == ButtonType.LeavePuzzle)
+                {
+                    StartCoroutine(LeavePuzzle(button.MyController));
+                }
             }
             else
             {
@@ -56,8 +61,11 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             TryUpdateSatelliteOrbRotationDistance();
             TryUpdatePuzzleRotationDistance();
             
-            _currentPlanetPuzzleController.RotateSatelliteOrb();
-            _currentPlanetPuzzleController.RotatePuzzle();
+            if (_currentPlanetPuzzleController != null) //null for one frame when leaving puzzle
+            {
+                _currentPlanetPuzzleController.RotateSatelliteOrb();
+                _currentPlanetPuzzleController.RotatePuzzle();
+            }
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -183,23 +191,20 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     }
     
     
-    private bool CheckButtonRaycasts()
+    private PuzzleButton CheckButtonRaycasts()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        bool isClickingButton = false;
         //PlanetPuzzleController hoveredPlanetPuzzleController = null;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, _puzzleButtonLayerMask))
         {
             //hoveredPlanetPuzzleController = hit.transform.gameObject.GetComponentInParent<PlanetPuzzleController>();
             
-            Debug.Log($"Clicked: {hit.transform.gameObject.name}");
-            
-            isClickingButton = true;
+            return hit.transform.gameObject.GetComponent<PuzzleButton>();
         }
         
-        return isClickingButton;
+        return null;
     }
     
     
@@ -234,6 +239,22 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             
             yield return null;
         }
+    }
+    
+    
+    private IEnumerator LeavePuzzle(PlanetPuzzleController currentPuzzleController)
+    {
+        _currentGameThreadStage = GameThreadStage.InteractionBlocked;
+        _currentPlanetPuzzleController = null;
+        
+        foreach (PlanetPuzzleController planetPuzzleController in _planetPuzzleControllers)
+        {
+            planetPuzzleController.TransitionToMenuMode(planetPuzzleController == currentPuzzleController);
+        }
+        
+        yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[0]));
+        
+        _currentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
 }
 

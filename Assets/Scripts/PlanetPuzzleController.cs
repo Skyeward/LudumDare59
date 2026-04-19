@@ -15,7 +15,11 @@ public class PlanetPuzzleController : MonoBehaviour
     public List<GameObject> Satellites;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
     [SerializeField] private RectTransform _puzzleCanvasRT;
+    [SerializeField] private CanvasGroup _puzzleCanvasCG;
+    [SerializeField] private List<TextMeshPro> _fadeablePuzzleTMPs;
     [SerializeField] private GameObject _buttonsParentGO;
+    [SerializeField] private SpriteRenderer _satelliteButtonSR;
+    [SerializeField] private SpriteRenderer _backButtonSR;
     [SerializeField] private string _planetDataTypeName;
     [SerializeField] private TextMeshPro _planetDesignationTMP;
     [SerializeField] private TextMeshPro _planetNameTMP;
@@ -41,9 +45,13 @@ public class PlanetPuzzleController : MonoBehaviour
         SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + _myPuzzleData.PlanetRadius));
         PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius);
         
-        _buttonsParentGO.transform.localPosition = new Vector3(_myPuzzleData.CameraDistance / 1.77f, -0.88f);
+        float scaleSize = _myPuzzleData.CameraDistance / 5.8f;
+        Vector3 scale = new Vector3(scaleSize, scaleSize, scaleSize);
+        
+        _buttonsParentGO.transform.localPosition = new Vector3(_myPuzzleData.CameraDistance / 1.77f, -_myPuzzleData.CameraDistance / 6f);
+        _buttonsParentGO.transform.localScale = scale;
         _puzzleCanvasRT.anchoredPosition = new Vector2(_myPuzzleData.CameraDistance / 1.77f, 0);
-        _puzzleCanvasRT.localScale = new Vector3(_myPuzzleData.CameraDistance / 5.8f, _myPuzzleData.CameraDistance / 5.8f, _myPuzzleData.CameraDistance / 5.8f);
+        _puzzleCanvasRT.localScale = scale;
         
         _planetNameTMP.SetText(_myPuzzleData.PlanetName);
         _planetDesignationTMP.SetText($"DESIGNATION {_myPuzzleData.PlanetDesignation}");
@@ -189,6 +197,23 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         StartCoroutine(FadeOutMenuPercentageCompletion());
         PlanetSelectionSpriteRenderer.gameObject.SetActive(false);
+        
+        if (isSelectedPuzzle)
+        {
+            _buttonsParentGO.SetActive(true);
+            StartCoroutine(FadeInPuzzleElements());
+        }
+    }
+    
+    
+    public void TransitionToMenuMode(bool isSelectedPuzzle)
+    {
+        StartCoroutine(FadeInMenuPercentageCompletion());
+        
+        if (isSelectedPuzzle)
+        {
+            StartCoroutine(FadeOutPuzzleElements());
+        }
     }
     
     
@@ -204,5 +229,68 @@ public class PlanetPuzzleController : MonoBehaviour
             
             yield return null;
         }
+    }
+    
+    
+    private IEnumerator FadeInMenuPercentageCompletion()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            SignalCompletionTMP.color = new Color(1, 1, 1, t);
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeInPuzzleElements()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            Color fadeColor = new Color(1, 1, 1, t);
+            
+            foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
+            {
+                tmp.color = fadeColor;
+            }
+            
+            _satelliteButtonSR.color = fadeColor;
+            _backButtonSR.color = fadeColor;
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeOutPuzzleElements()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            Color fadeColor = new Color(1, 1, 1, 1 - t);
+            
+            foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
+            {
+                tmp.color = fadeColor;
+            }
+            
+            _satelliteButtonSR.color = fadeColor;
+            _backButtonSR.color = fadeColor;
+            
+            yield return null;
+        }
+        
+        _buttonsParentGO.SetActive(false);
     }
 }

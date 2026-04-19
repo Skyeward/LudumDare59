@@ -115,8 +115,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3550524814125222478
 Transform:
   m_ObjectHideFlags: 0
@@ -869,8 +869,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1008,6 +1008,7 @@ GameObject:
   - component: {fileID: 8850388215601236452}
   - component: {fileID: 6509837680985332715}
   - component: {fileID: 4597872572213775150}
+  - component: {fileID: 2755409820550503725}
   m_Layer: 7
   m_Name: SatelliteButton
   m_TagString: Untagged
@@ -1080,7 +1081,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: e2ffb63252b3fe74fab7732ce19ce0be, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1110,6 +1111,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.12, y: 5.12, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2755409820550503725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335682710821021398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a68120eea8f1b84b8411c3a87370587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleButton
+  MyController: {fileID: 4272994477964448296}
+  MyButtonType: 1
 --- !u!1 &7475082817774217507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1136,7 @@ GameObject:
   - component: {fileID: 6684957987455674947}
   - component: {fileID: 407817171998895593}
   - component: {fileID: 1151374842008920863}
+  - component: {fileID: 877400005455532333}
   m_Layer: 7
   m_Name: BackButton
   m_TagString: Untagged
@@ -1193,7 +1209,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: d0fbd02117af8fc40ba5f522b9ff81ce, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1223,6 +1239,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.12, y: 5.12, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &877400005455532333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7475082817774217507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a68120eea8f1b84b8411c3a87370587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleButton
+  MyController: {fileID: 4272994477964448296}
+  MyButtonType: 2
 --- !u!1 &7585340303964465215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,7 +1308,14 @@ MonoBehaviour:
   Satellites: []
   SatelliteOrbMeshPrefab: {fileID: 4198220518026237287, guid: 897a0b28b3a762b4e93b0cbe6648c28f, type: 3}
   _puzzleCanvasRT: {fileID: 5988660460298314831}
+  _puzzleCanvasCG: {fileID: 5582950556533677367}
+  _fadeablePuzzleTMPs:
+  - {fileID: 3229631852123910458}
+  - {fileID: 7705486144700919641}
+  - {fileID: 5211651738795276123}
   _buttonsParentGO: {fileID: 1334899948161401987}
+  _satelliteButtonSR: {fileID: 6509837680985332715}
+  _backButtonSR: {fileID: 407817171998895593}
   _planetDataTypeName: 
   _planetDesignationTMP: {fileID: 3229631852123910458}
   _planetNameTMP: {fileID: 7705486144700919641}
@@ -1403,8 +1440,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
