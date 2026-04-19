@@ -1,38 +1,57 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 
 public class PlanetPuzzleSceneController : MonoBehaviour
 {
-    [SerializeField] private PlanetPuzzleController _planetPuzzleController;
+    [SerializeField] private List<PlanetPuzzleController> _planetPuzzleControllers;
+    [SerializeField] private LayerMask _planetLayerMask;
+    [SerializeField] private AnimationCurve _cameraSlideCurve;
+    private PlanetPuzzleController _currentPlanetPuzzleController;
     
     private bool _isRotatingSatelliteOrb = false;
     private bool _isRotatingPuzzle = false;
     private List<Vector3> _previousMousePositions = new List<Vector3>();
     private float _rotationSpeed = 10f;
     
+    private List<Vector3> _cameraPositionsMenuStages = new List<Vector3>()
+    {
+        new Vector3(2.01f, -0.71f, -7.74f)
+    };
+    private GameThreadStage _currentGameThreadStage;
+    
     
     private void Start()
     {
-        _planetPuzzleController.SetUpPuzzle(new TestPlanetPuzzleData());
+        Camera.main.transform.position = _cameraPositionsMenuStages[0];
+        _currentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
     
     
     private void Update()
     {
-        SaveMousePosition();
-        SetRotationInteractionFlags();
-        
-        TryUpdateSatelliteOrbRotationDistance();
-        TryUpdatePuzzleRotationDistance();
-        
-        _planetPuzzleController.RotateSatelliteOrb();
-        _planetPuzzleController.RotatePuzzle();
-        
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (_currentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
         {
-            Debug.Log($"Current puzzle completion: {_planetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
+            CheckPlanetRaycasts();
+        }
+
+        if (_currentGameThreadStage == GameThreadStage.SolvingPuzzle)
+        {
+            SaveMousePosition();
+            SetRotationInteractionFlags();
+            
+            TryUpdateSatelliteOrbRotationDistance();
+            TryUpdatePuzzleRotationDistance();
+            
+            _currentPlanetPuzzleController.RotateSatelliteOrb();
+            _currentPlanetPuzzleController.RotatePuzzle();
+            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log($"Current puzzle completion: {_currentPlanetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
+            }
         }
     }
     
@@ -107,8 +126,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
         yDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
-        _planetPuzzleController.PuzzleXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
-        _planetPuzzleController.PuzzleYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
+        _currentPlanetPuzzleController.PuzzleXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
+        _currentPlanetPuzzleController.PuzzleYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
     }
     
     
@@ -125,7 +144,72 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
         yDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
-        _planetPuzzleController.SatelliteOrbXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
-        _planetPuzzleController.SatelliteOrbYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
+        _currentPlanetPuzzleController.SatelliteOrbXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
+        _currentPlanetPuzzleController.SatelliteOrbYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
     }
+    
+    
+    private void CheckPlanetRaycasts()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        PlanetPuzzleController hoveredPlanetPuzzleController = null;
+
+        if (Physics.Raycast(ray, out hit, _planetLayerMask))
+        {
+            hoveredPlanetPuzzleController = hit.transform.gameObject.GetComponentInParent<PlanetPuzzleController>();
+        }
+        
+        foreach (PlanetPuzzleController planetPuzzleController in _planetPuzzleControllers)
+        {
+            planetPuzzleController.PlanetSelectionSpriteRenderer.gameObject.SetActive(planetPuzzleController == hoveredPlanetPuzzleController);
+        }
+        
+        if (Input.GetMouseButtonDown(0) && hoveredPlanetPuzzleController != null)
+        {
+            StartCoroutine(SelectPlanetPuzzle(hoveredPlanetPuzzleController));
+        }
+    }
+    
+    
+    private IEnumerator SelectPlanetPuzzle(PlanetPuzzleController selectedPlanetPuzzleController)
+    {
+        _currentGameThreadStage = GameThreadStage.InteractionBlocked;
+        _currentPlanetPuzzleController = selectedPlanetPuzzleController;
+        
+        foreach (PlanetPuzzleController planetPuzzleController in _planetPuzzleControllers)
+        {
+            planetPuzzleController.TransitionToPuzzleMode(planetPuzzleController == selectedPlanetPuzzleController);
+        }
+        
+        yield return StartCoroutine(SlideCamera(selectedPlanetPuzzleController.GetCameraPosition()));
+        
+        _currentGameThreadStage = GameThreadStage.SolvingPuzzle;
+    }
+    
+    
+    private IEnumerator SlideCamera(Vector3 target)
+    {
+        float t = 0;
+        float totalTime = 1;
+        Vector3 startPoint = Camera.main.transform.position;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            float curvePoint = _cameraSlideCurve.Evaluate(t);
+            
+            Camera.main.transform.position = Vector3.Lerp(startPoint, target, curvePoint);
+            
+            yield return null;
+        }
+    }
+}
+
+
+public enum GameThreadStage
+{
+    InteractionBlocked,
+    WaitingForPlanetSelection,
+    SolvingPuzzle
 }

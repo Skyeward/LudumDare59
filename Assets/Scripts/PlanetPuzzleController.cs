@@ -1,11 +1,13 @@
-using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class PlanetPuzzleController : MonoBehaviour
 {
-    public PlanetPuzzleData CurrentPuzzleData;
     public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
@@ -14,6 +16,10 @@ public class PlanetPuzzleController : MonoBehaviour
     public Rigidbody SatelliteParentRb;
     [SerializeField] private GameObject _placeholderPlanet;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
+    [SerializeField] private string _planetDataTypeName; 
+    private PlanetPuzzleData _myPuzzleData;
+    public TextMeshPro SignalCompletionTMP;
+    public SpriteRenderer PlanetSelectionSpriteRenderer;
     public float SatelliteOrbXDistanceToRotate = 0f;
     public float SatelliteOrbYDistanceToRotate = 0f;
     public float PuzzleXDistanceToRotate = 0f;
@@ -24,30 +30,33 @@ public class PlanetPuzzleController : MonoBehaviour
     
     public void Start()
     {
-        if (_placeholderPlanet != null)
-        {
-            Destroy(_placeholderPlanet);   
-        }
+        // if (_placeholderPlanet != null)
+        // {
+        //     Destroy(_placeholderPlanet);   
+        // }
+        
+        _myPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
+        SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + _myPuzzleData.PlanetRadius));
+        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius);
     }
     
     
-    public void SetUpPuzzle(PlanetPuzzleData puzzleData)
+    public void SetUpPuzzle()
     {
-        CurrentPuzzleData = puzzleData;
-        GameObject planetInstance = Instantiate(Resources.Load($"Planets/{puzzleData.PlanetPrefabName}")) as GameObject;
+        GameObject planetInstance = Instantiate(Resources.Load($"Planets/{_myPuzzleData.PlanetPrefabName}")) as GameObject;
         planetInstance.transform.parent = PlanetParentTransform;
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshRadius = puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x/100f;
+        float satelliteOrbMeshRadius = _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x / 100f;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
-        foreach (SphereCoordinate radioTowerCoord in puzzleData.RadioTowerCoordinates)
+        foreach (SphereCoordinate radioTowerCoord in _myPuzzleData.RadioTowerCoordinates)
         {
             GameObject radioTower = Instantiate(Resources.Load("RadioTower")) as GameObject;
             radioTower.transform.parent = planetInstance.transform;
             
-            radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, puzzleData.PlanetRadius);
+            radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, _myPuzzleData.PlanetRadius);
             
             radioTower.transform.LookAt(planetInstance.transform);
             Quaternion currentRotation = radioTower.transform.rotation;
@@ -56,12 +65,12 @@ public class PlanetPuzzleController : MonoBehaviour
             RadioTowers.Add(radioTower);
         }
         
-        foreach (SphereCoordinate satelliteCoord in puzzleData.SatelliteCoordinates)
+        foreach (SphereCoordinate satelliteCoord in _myPuzzleData.SatelliteCoordinates)
         {
             GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
             
             satellite.transform.LookAt(planetInstance.transform);
             Quaternion currentRotation = satellite.transform.rotation;
@@ -153,10 +162,38 @@ public class PlanetPuzzleController : MonoBehaviour
             totalDistance += costMatrix[i, assignment[i]];
         }
 
-        float maxDistance = CurrentPuzzleData.PlanetRadius * 2f * n; // rough upper bound
+        float maxDistance = _myPuzzleData.PlanetRadius * 2f * n; // rough upper bound
         float score = 1f - (totalDistance / maxDistance);
         score = Mathf.Clamp01(score);
 
         return Mathf.RoundToInt(score * 100f);
+    }
+
+
+    public Vector3 GetCameraPosition()
+    {
+        return PuzzleParentTransform.transform.position + new Vector3(_myPuzzleData.CameraDistance * 0.25f, 0, -_myPuzzleData.CameraDistance);
+    }
+    
+    
+    public void TransitionToPuzzleMode(bool isSelectedPuzzle)
+    {
+        StartCoroutine(FadeOutMenuPercentageCompletion());
+        PlanetSelectionSpriteRenderer.gameObject.SetActive(false);
+    }
+    
+    
+    private IEnumerator FadeOutMenuPercentageCompletion()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            SignalCompletionTMP.color = new Color(1, 1, 1, 1 - t);
+            
+            yield return null;
+        }
     }
 }

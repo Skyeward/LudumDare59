@@ -5,6 +5,7 @@ public class PlanetPuzzleData
 {
     public string PlanetPrefabName;
     public float PlanetRadius;
+    public float CameraDistance;
     public List<SphereCoordinate> RadioTowerCoordinates;
     public List<SphereCoordinate> SatelliteCoordinates;
     public int CompletionPercentage;
@@ -34,6 +35,28 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
     {
         PlanetPrefabName = "PlanetBlueGreen";
         PlanetRadius = 0.98f;
+        CameraDistance = 4.5f;
+        RadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(30, 10),
+            new SphereCoordinate(10, 30),
+        };
+        SatelliteCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(10, 10),
+            new SphereCoordinate(20, 20)
+        };
+    }
+}
+
+
+public class TestPlanetPuzzleData2 : PlanetPuzzleData
+{
+    public TestPlanetPuzzleData2()
+    {
+        PlanetPrefabName = "PlanetTest";
+        PlanetRadius = 0.5f;
+        CameraDistance = 3f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(30, 10),
