@@ -1,21 +1,33 @@
-using UnityEngine;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class PlanetPuzzleController : MonoBehaviour
 {
-    public PlanetPuzzleData CurrentPuzzleData;
+    public PlanetPuzzleSceneController MySceneController;
     public Transform PuzzleParentTransform;
     public Transform PlanetParentTransform;
     public Transform SatelliteParentTransform;
     public List<GameObject> RadioTowers;
     public List<GameObject> Satellites;
-    public Rigidbody SatelliteParentRb;
-    [SerializeField] private GameObject _placeholderPlanet;
     [SerializeField] private GameObject SatelliteOrbMeshPrefab;
+    [SerializeField] private RectTransform _puzzleCanvasRT;
+    [SerializeField] private CanvasGroup _puzzleCanvasCG;
+    [SerializeField] private List<TextMeshPro> _fadeablePuzzleTMPs;
+    [SerializeField] private GameObject _buttonsParentGO;
+    [SerializeField] private SpriteRenderer _satelliteButtonSR;
+    [SerializeField] private SpriteRenderer _backButtonSR;
+    [SerializeField] private string _planetDataTypeName;
+    [SerializeField] private TextMeshPro _planetDesignationTMP;
+    [SerializeField] private TextMeshPro _planetNameTMP;
+    private PlanetPuzzleData _myPuzzleData;
+    public TextMeshPro SignalCompletionTMP;
+    public SpriteRenderer PlanetSelectionSpriteRenderer;
     [SerializeField] private GameObject _connectionPrefab;
     public float SatelliteOrbXDistanceToRotate = 0f;
     public float SatelliteOrbYDistanceToRotate = 0f;
@@ -33,22 +45,36 @@ public class PlanetPuzzleController : MonoBehaviour
 
     private bool _blockingOffsettingRotation = false;
     private bool _markForReset = false;
-    private PuzzleState _state = PuzzleState.Interactive;
-
     
     
     public void Start()
     {
-        if (_placeholderPlanet != null)
-        {
-            Destroy(_placeholderPlanet);   
-        }
+        // if (_placeholderPlanet != null)
+        // {
+        //     Destroy(_placeholderPlanet);   
+        // }
+        
+        MySceneController = FindAnyObjectByType<PlanetPuzzleSceneController>();
+        _myPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
+        SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + _myPuzzleData.PlanetRadius));
+        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius, 0.75f * _myPuzzleData.PlanetRadius);
+        
+        float scaleSize = _myPuzzleData.CameraDistance / 5.8f;
+        Vector3 scale = new Vector3(scaleSize, scaleSize, scaleSize);
+        
+        _buttonsParentGO.transform.localPosition = new Vector3(_myPuzzleData.CameraDistance / 1.77f, -_myPuzzleData.CameraDistance / 6f);
+        _buttonsParentGO.transform.localScale = scale;
+        _puzzleCanvasRT.anchoredPosition = new Vector2(_myPuzzleData.CameraDistance / 1.77f, 0);
+        _puzzleCanvasRT.localScale = scale;
+        
+        _planetNameTMP.SetText(_myPuzzleData.PlanetName);
+        _planetDesignationTMP.SetText($"DESIGNATION {_myPuzzleData.PlanetDesignation}");
     }
 
 
-    public bool ShowingSolution()
+    public bool AnimatingSolution()
     {
-        return _state == PuzzleState.ShowingSolution;
+        return MySceneController.CurrentGameThreadStage == GameThreadStage.AnimatingSolution;
     }
 
     void LateUpdate()
@@ -64,7 +90,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
     public void HideSolution()
     {
-        if (_state == PuzzleState.Idle)
+        if (MySceneController.CurrentGameThreadStage == GameThreadStage.ShowingSolution)
         {
             ExitSolutionView();
         }
@@ -94,23 +120,22 @@ public class PlanetPuzzleController : MonoBehaviour
     }
     
     
-    public void SetUpPuzzle(PlanetPuzzleData puzzleData)
+    public void SetUpPuzzle()
     {
-        CurrentPuzzleData = puzzleData;
-        GameObject planetInstance = Instantiate(Resources.Load($"Planets/{puzzleData.PlanetPrefabName}")) as GameObject;
+        GameObject planetInstance = Instantiate(Resources.Load($"Planets/{_myPuzzleData.PlanetPrefabName}")) as GameObject;
         planetInstance.transform.parent = PlanetParentTransform;
         
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshRadius = puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x/100f;
+        float satelliteOrbMeshRadius = _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier * planetInstance.transform.localScale.x / 100f;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
-        foreach (SphereCoordinate radioTowerCoord in puzzleData.RadioTowerCoordinates)
+        foreach (SphereCoordinate radioTowerCoord in _myPuzzleData.RadioTowerCoordinates)
         {
             GameObject radioTower = Instantiate(Resources.Load("RadioTower")) as GameObject;
             radioTower.transform.parent = planetInstance.transform;
             
-            radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, puzzleData.PlanetRadius);
+            radioTower.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(radioTowerCoord, _myPuzzleData.PlanetRadius);
             
             radioTower.transform.LookAt(planetInstance.transform);
             Quaternion currentRotation = radioTower.transform.rotation;
@@ -119,12 +144,12 @@ public class PlanetPuzzleController : MonoBehaviour
             RadioTowers.Add(radioTower);
         }
         
-        foreach (SphereCoordinate satelliteCoord in puzzleData.SatelliteCoordinates)
+        foreach (SphereCoordinate satelliteCoord in _myPuzzleData.SatelliteCoordinates)
         {
             GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, puzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.position = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, _myPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
             
             satellite.transform.LookAt(planetInstance.transform);
             Quaternion currentRotation = satellite.transform.rotation;
@@ -189,13 +214,13 @@ public class PlanetPuzzleController : MonoBehaviour
 
     public void ShowSolution()
     {
-        if (_state != PuzzleState.Interactive)
+        if (MySceneController.CurrentGameThreadStage != GameThreadStage.SolvingPuzzle)
             return;
 
         if (_solutionRoutine != null)
             StopCoroutine(_solutionRoutine);
 
-        _state = PuzzleState.ShowingSolution;
+        MySceneController.CurrentGameThreadStage = GameThreadStage.AnimatingSolution;
         _solutionRoutine = StartCoroutine(DisplayCurrentAssignment());
     }
 
@@ -213,13 +238,13 @@ public class PlanetPuzzleController : MonoBehaviour
         {
             pair.Tower.GetComponentInChildren<RadioTowerController>().StartPulsingSignal();
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
-            DrawConnection(pair, CurrentPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
-            yield return new WaitForSeconds(1f);
+            DrawConnection(pair, _myPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
+            yield return new WaitForSeconds(1.5f);
             pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal(pair.Distance.ToString("F2"));
             yield return new WaitForSeconds(0.5f);
         }
 
-        _state = PuzzleState.Idle;
+        MySceneController.CurrentGameThreadStage = GameThreadStage.ShowingSolution;
     }
 
     public void ExitSolutionView()
@@ -243,7 +268,7 @@ public class PlanetPuzzleController : MonoBehaviour
         }
 
         _blockingOffsettingRotation = false;
-        _state = PuzzleState.Interactive;
+        MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
 
 
@@ -417,11 +442,119 @@ private Vector3[] BuildRadialSphereArc(
             totalDistance += costMatrix[i, assignment[i]];
         }
 
-        float maxDistance = CurrentPuzzleData.PlanetRadius * 2f * n; // rough upper bound
+        float maxDistance = _myPuzzleData.PlanetRadius * 2f * n; // rough upper bound
         float score = 1f - (totalDistance / maxDistance);
         score = Mathf.Clamp01(score);
 
         return Mathf.RoundToInt(score * 100f);
+    }
+
+
+    public Vector3 GetCameraPosition()
+    {
+        return PuzzleParentTransform.transform.position + new Vector3(_myPuzzleData.CameraDistance * 0.25f, 0, -_myPuzzleData.CameraDistance);
+    }
+    
+    
+    public void TransitionToPuzzleMode(bool isSelectedPuzzle)
+    {
+        StartCoroutine(FadeOutMenuPercentageCompletion());
+        PlanetSelectionSpriteRenderer.gameObject.SetActive(false);
+        
+        if (isSelectedPuzzle)
+        {
+            _buttonsParentGO.SetActive(true);
+            StartCoroutine(FadeInPuzzleElements());
+        }
+    }
+    
+    
+    public void TransitionToMenuMode(bool isSelectedPuzzle)
+    {
+        StartCoroutine(FadeInMenuPercentageCompletion());
+        
+        if (isSelectedPuzzle)
+        {
+            StartCoroutine(FadeOutPuzzleElements());
+        }
+    }
+    
+    
+    private IEnumerator FadeOutMenuPercentageCompletion()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            SignalCompletionTMP.color = new Color(1, 1, 1, 1 - t);
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeInMenuPercentageCompletion()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            SignalCompletionTMP.color = new Color(1, 1, 1, t);
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeInPuzzleElements()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            Color fadeColor = new Color(1, 1, 1, t);
+            
+            foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
+            {
+                tmp.color = fadeColor;
+            }
+            
+            _satelliteButtonSR.color = fadeColor;
+            _backButtonSR.color = fadeColor;
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeOutPuzzleElements()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            Color fadeColor = new Color(1, 1, 1, 1 - t);
+            
+            foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
+            {
+                tmp.color = fadeColor;
+            }
+            
+            _satelliteButtonSR.color = fadeColor;
+            _backButtonSR.color = fadeColor;
+            
+            yield return null;
+        }
+        
+        _buttonsParentGO.SetActive(false);
     }
 }
 
