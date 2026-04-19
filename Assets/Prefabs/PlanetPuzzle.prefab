@@ -146,7 +146,10 @@ MonoBehaviour:
   RadioTowers: []
   Satellites: []
   SatelliteParentRb: {fileID: 0}
+  _placeholderPlanet: {fileID: 0}
   SatelliteOrbMeshPrefab: {fileID: 4198220518026237287, guid: 897a0b28b3a762b4e93b0cbe6648c28f, type: 3}
+  _connectionPrefab: {fileID: 4798461118133471274, guid: 7d974f8a07b4e5a42a11b8e1e887f1c3, type: 3}
   SatelliteOrbXDistanceToRotate: 0
   SatelliteOrbYDistanceToRotate: 0
-  PuzzleDistanceToRotate: 0
+  PuzzleXDistanceToRotate: 0
+  PuzzleYDistanceToRotate: 0
