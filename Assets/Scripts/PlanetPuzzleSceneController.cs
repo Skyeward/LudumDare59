@@ -21,6 +21,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void Update()
     {
+
+        if(_planetPuzzleController.ShowingSolution())
+        {
+            return;
+        }
+
         SaveMousePosition();
         SetRotationInteractionFlags();
         
@@ -33,9 +39,10 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log($"Current puzzle completion: {_planetPuzzleController.CalculateCurrentPuzzleCompletion()}%");
-            StartCoroutine(_planetPuzzleController.DisplayCurrentAssignment());
+            _planetPuzzleController.ShowSolution();
         }
     }
+    
     
     
     private void SaveMousePosition()
@@ -80,7 +87,9 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             //Debug.Log("Started rotating satellite orb");
             if (!_isRotatingPuzzle)
             {
+                _planetPuzzleController.HideSolution();
                 _isRotatingSatelliteOrb = true;
+                
             }
         }
         

@@ -8,6 +8,7 @@ public class RadioTowerController : MonoBehaviour
     [SerializeField] private float pulseAmplitude = 0.5f;
     [SerializeField] private float pulseSpeed = 3f;
     [SerializeField] Material _lightMaterial;
+    [SerializeField] Material _baseMaterial;
     [SerializeField] private Renderer signalRenderer;
     [SerializeField] private Color baseColor = Color.yellow;
     [SerializeField] private float emissionStrength = 3f;
@@ -43,9 +44,21 @@ public class RadioTowerController : MonoBehaviour
     {
         _baseScale = SignalSphere.transform.localScale;
         _pulsingSignal = true;
+        _baseMaterial = signalRenderer.material;
         if(_lightMaterial != null)
         {
             SignalSphere.GetComponent<MeshRenderer>().material = _lightMaterial;
+        }
+    }
+
+    public void StopPulsingSignal()
+    {
+        _pulsingSignal = false;
+        SignalSphere.transform.localScale = _baseScale;
+
+        if(_baseMaterial != null)
+        {
+            SignalSphere.GetComponent<MeshRenderer>().material = _baseMaterial;
         }
     }
 }

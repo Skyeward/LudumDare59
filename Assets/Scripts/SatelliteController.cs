@@ -14,6 +14,7 @@ public class SatelliteController : MonoBehaviour
     [SerializeField] private float pulseAmplitude = 0.5f;
     [SerializeField] private float pulseSpeed = 3f;
     [SerializeField] Material _lightMaterial;
+    [SerializeField] Material _baseMaterial;
     [SerializeField] TextMeshPro _distanceText;
     [SerializeField] private Renderer signalRenderer;
     [SerializeField] private Color baseColor = Color.yellow;
@@ -84,6 +85,7 @@ public class SatelliteController : MonoBehaviour
     {
         _pulsingSignal = false;
         SignalSphere.transform.localScale = _baseScale;
+        SignalSphere.GetComponent<MeshRenderer>().material = _baseMaterial;
 
         _distanceText.gameObject.SetActive(false);
     }

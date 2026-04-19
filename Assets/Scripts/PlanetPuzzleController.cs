@@ -32,6 +32,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
     private bool _blockingOffsettingRotation = false;
     private bool _markForReset = false;
+    private PuzzleState _state = PuzzleState.Interactive;
 
     
     
@@ -43,6 +44,12 @@ public class PlanetPuzzleController : MonoBehaviour
         }
     }
 
+
+    public bool ShowingSolution()
+    {
+        return _state == PuzzleState.ShowingSolution;
+    }
+
     void LateUpdate()
     {
         if (_markForReset)
@@ -51,6 +58,15 @@ public class PlanetPuzzleController : MonoBehaviour
             _markForReset = false;
         }
         UpdateConnections();
+    }
+
+
+    public void HideSolution()
+    {
+        if (_state == PuzzleState.Idle)
+        {
+            ExitSolutionView();
+        }
     }
 
 
@@ -67,6 +83,12 @@ public class PlanetPuzzleController : MonoBehaviour
         foreach (SatelliteController sc in SatelliteParentTransform.GetComponentsInChildren<SatelliteController>())
         {
             sc.ShowGuideLine();
+            sc.StopPulsingSignal();
+        }
+
+        foreach(RadioTowerController rtc in PlanetParentTransform.GetComponentsInChildren<RadioTowerController>())
+        {
+            rtc.StopPulsingSignal();
         }
     }
     
@@ -168,7 +190,22 @@ public class PlanetPuzzleController : MonoBehaviour
     }
 
 
-    public IEnumerator DisplayCurrentAssignment()
+    private Coroutine _solutionRoutine;
+
+    public void ShowSolution()
+    {
+        if (_state != PuzzleState.Interactive)
+            return;
+
+        if (_solutionRoutine != null)
+            StopCoroutine(_solutionRoutine);
+
+        _state = PuzzleState.ShowingSolution;
+        _solutionRoutine = StartCoroutine(DisplayCurrentAssignment());
+    }
+
+
+    public IEnumerator  DisplayCurrentAssignment()
     {
         foreach(SatelliteController sc in SatelliteParentTransform.GetComponentsInChildren<SatelliteController>())
         {
@@ -182,11 +219,37 @@ public class PlanetPuzzleController : MonoBehaviour
             pair.Tower.GetComponentInChildren<RadioTowerController>().StartPulsingSignal();
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
             DrawConnection(pair, CurrentPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
             pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal(pair.Distance.ToString("F2"));
             yield return new WaitForSeconds(0.5f);
         }
 
+        _state = PuzzleState.Idle;
+    }
+
+    public void ExitSolutionView()
+    {
+        // stop visuals
+        foreach (var c in _activeConnections)
+        {
+            if (c.Line != null)
+                Destroy(c.Line.gameObject);
+        }
+        _activeConnections.Clear();
+
+        foreach (GameObject tower in RadioTowers)
+        {
+                tower.GetComponentInChildren<RadioTowerController>()?.StopPulsingSignal();
+        }
+
+        foreach (GameObject sat in Satellites)
+        {
+            sat.GetComponentInChildren<SatelliteController>()?.StopPulsingSignal();
+            sat.GetComponentInChildren<SatelliteController>()?.ShowGuideLine(); 
+        }
+
+        _blockingOffsettingRotation = false;
+        _state = PuzzleState.Interactive;
     }
 
 
@@ -482,3 +545,11 @@ public class ActiveConnection
     public float Alpha;
     public float Progress;   
 }
+
+enum PuzzleState
+{
+    Idle,
+    ShowingSolution,
+    Interactive
+}
+
