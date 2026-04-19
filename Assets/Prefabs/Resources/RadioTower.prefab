@@ -132,7 +132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1134431002444866735
 Transform:
   m_ObjectHideFlags: 0
@@ -142,8 +142,8 @@ Transform:
   m_GameObject: {fileID: 5343329384185422600}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.129, z: 0}
-  m_LocalScale: {x: 0.030000001, y: 0.030000001, z: 0.030000001}
+  m_LocalPosition: {x: 0, y: 0.1606, z: 0}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8966281804045286671}
@@ -181,7 +181,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -235,6 +235,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8966281804045286671}
+  - component: {fileID: 8520163212577053013}
   m_Layer: 0
   m_Name: RadioTower
   m_TagString: Untagged
@@ -262,6 +263,25 @@ Transform:
   - {fileID: 6128802903531996000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8520163212577053013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6364419915504861871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf3dbf44bec8b24ca8446d284c6ed9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RadioTowerController
+  SignalSphere: {fileID: 5343329384185422600}
+  pulseAmplitude: 0.1
+  pulseSpeed: 2
+  _lightMaterial: {fileID: 2100000, guid: fa4a35f8c46f2d7499e3816ea2f292e3, type: 2}
+  signalRenderer: {fileID: 731078156106419586}
+  baseColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  emissionStrength: 3
 --- !u!1001 &2621187746730367921
 PrefabInstance:
   m_ObjectHideFlags: 0

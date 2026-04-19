@@ -69,7 +69,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log($"Current puzzle completion: {_currentPlanetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
+                Debug.Log($"Current puzzle completion: {_currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion()}%");
+                StartCoroutine(_currentPlanetPuzzleController.DisplayCurrentAssignment());
             }
         }
     }

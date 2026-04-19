@@ -58,10 +58,10 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
 {
     public TestPlanetPuzzleData2()
     {
-        PlanetPrefabName = "PlanetTest";
+        PlanetPrefabName = "Pearlescence2";
         PlanetName = "The Test";
         PlanetDesignation = "A1PD-N";
-        PlanetRadius = 0.5f;
+        PlanetRadius = 1.1f;
         CameraDistance = 3f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
