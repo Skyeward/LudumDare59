@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Collections;
+using System.Linq;
 
 
 public class PlanetPuzzleController : MonoBehaviour
@@ -138,12 +139,6 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         if(!_blockingOffsettingRotation)
         {
-            if (!_markForReset && (SatelliteOrbXDistanceToRotate != 0 || SatelliteOrbYDistanceToRotate != 0))
-            {
-                //_markForReset = true;
-            }
-
-            //_markForReset = true;
 
             float xDistanceToRotate = SatelliteOrbXDistanceToRotate * _rotationSmoothing * Time.deltaTime;
             SatelliteOrbXDistanceToRotate -= xDistanceToRotate;
@@ -229,7 +224,6 @@ public class PlanetPuzzleController : MonoBehaviour
 
     public void ExitSolutionView()
     {
-        // stop visuals
         foreach (var c in _activeConnections)
         {
             if (c.Line != null)
@@ -301,15 +295,10 @@ private void UpdateConnections()
         if (c.Line == null || c.Tower == null || c.Satellite == null || c.Center == null)
             continue;
 
-        // ----------------------------
-        // Texture scrolling (dash motion)
-        // ----------------------------
         float offset = (Time.time * scrollSpeed) + (c.Distance * 0.01f);
         c.Line.material.mainTextureOffset = new Vector2(offset, 0f);
 
-        // ----------------------------
-        // Fade in
-        // ----------------------------
+
         c.Alpha = Mathf.Clamp01(c.Alpha + Time.deltaTime * _fadeSpeed);
 
         Color baseColor = Color.Lerp(Color.yellow, Color.orange, c.Distance / c.MaxDistance);
@@ -318,9 +307,7 @@ private void UpdateConnections()
         c.Line.startColor = finalColor;
         c.Line.endColor = finalColor;
 
-        // ----------------------------
-        // Build arc
-        // ----------------------------
+
         Vector3[] arc = BuildRadialSphereArc(
             c.Tower.position,
             c.Satellite.position,
@@ -328,9 +315,7 @@ private void UpdateConnections()
             _segments
         );
 
-        // ----------------------------
-        // Growth over time (SAFE VERSION)
-        // ----------------------------
+
         float duration = Mathf.Lerp(0.5f, 2.0f, c.Distance / c.MaxDistance);
         c.Progress = Mathf.Clamp01(c.Progress + Time.deltaTime / duration);
 
@@ -339,12 +324,10 @@ private void UpdateConnections()
         int lastIndex = Mathf.FloorToInt(_segments * eased);
         lastIndex = Mathf.Clamp(lastIndex, 1, _segments);
 
-        // LineRenderer must include last point
+
         c.Line.positionCount = lastIndex + 1;
 
-        // ----------------------------
-        // Write full segments safely
-        // ----------------------------
+
         for (int i = 0; i <= lastIndex; i++)
         {
             c.Line.SetPosition(i, arc[i]);
@@ -371,10 +354,8 @@ private Vector3[] BuildRadialSphereArc(
     {
         float t = (float)i / segments;
 
-        // interpolate direction across sphere surface
         Vector3 dir = Vector3.Slerp(dirA, dirB, t).normalized;
 
-        // interpolate radius between inner and outer sphere
         float radius = Mathf.Lerp(radiusA, radiusB, t);
 
         points[i] = center + dir * radius;
@@ -382,81 +363,6 @@ private Vector3[] BuildRadialSphereArc(
 
     return points;
 }
-
-private IEnumerator AnimateConnectionLive(LineRenderer lr, Transform tower, Transform satellite, Transform center, float distance, float maxDistance)
-{
-    float duration = Mathf.Lerp(0.15f, 0.6f, distance / maxDistance);
-    float t = 0f;
-
-    int segments = 20;
-    float arcHeight = CurrentPuzzleData.PlanetRadius * 0.2f;
-
-    while (t < 1f)
-    {
-        t += Time.deltaTime / duration;
-
-        float eased = Mathf.SmoothStep(0f, 1f, t);
-
-        Vector3[] arc = BuildRadialSphereArc(
-            tower.position,
-            satellite.position,
-            center.position,
-            segments
-        );
-
-        int visible = Mathf.Clamp(Mathf.RoundToInt(segments * eased), 1, segments + 1);
-
-        lr.positionCount = visible;
-
-        for (int i = 0; i < visible; i++)
-        {
-            lr.SetPosition(i, arc[i]);
-        }
-
-        yield return null;
-    }
-
-    // final snap
-    Vector3[] finalArc = BuildRadialSphereArc(
-        tower.position,
-        satellite.position,
-        center.position,
-        segments
-    );
-
-    lr.positionCount = finalArc.Length;
-    lr.SetPositions(finalArc);
-}
-
-    private IEnumerator PulseLineWidth(LineRenderer lr)
-    {
-        float baseWidth = lr.startWidth;
-        float peakWidth = baseWidth * 1.6f;
-
-        float t = 0f;
-
-        // expand
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 6f;
-            float w = Mathf.Lerp(baseWidth, peakWidth, Mathf.SmoothStep(0f, 1f, t));
-
-            lr.startWidth = lr.endWidth = w;
-            yield return null;
-        }
-
-        t = 0f;
-
-        // contract
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 4f;
-            float w = Mathf.Lerp(peakWidth, baseWidth, Mathf.SmoothStep(0f, 1f, t));
-
-            lr.startWidth = lr.endWidth = w;
-            yield return null;
-        }
-    }
 
 
     public int CalculateCurrentPuzzleCompletion()    
