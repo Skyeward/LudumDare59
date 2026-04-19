@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 
@@ -28,11 +29,28 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         
         _planetPuzzleController.RotateSatelliteOrb();
         _planetPuzzleController.RotatePuzzle();
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log($"Current puzzle completion: {_planetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
+        }
     }
     
     
     private void SaveMousePosition()
     {
+        if (
+            Input.mousePosition.x < 0
+            || Input.mousePosition.y < 0
+            || Input.mousePosition.x > Screen.width
+            || Input.mousePosition.y > Screen.height
+        )
+        {
+            _previousMousePositions.Clear();
+            
+            return;
+        }
+        
         _previousMousePositions.Add(Input.mousePosition);
         
         while (_previousMousePositions.Count > 2)
@@ -64,6 +82,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                 _isRotatingSatelliteOrb = true;
             }
         }
+        
         else if (Input.GetMouseButtonDown(1))
         {
             //Debug.Log("Started rotating puzzle");
@@ -71,11 +90,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             {
                 _isRotatingPuzzle = true;
             }
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log($"Current puzzle completion: {_planetPuzzleController.CalculateCurrentPuzzleCompletionPercentage()}%");
         }
     }
     
@@ -88,10 +102,10 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
         
         float xDistanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
-        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
         float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
-        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
         _planetPuzzleController.PuzzleXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
         _planetPuzzleController.PuzzleYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
@@ -106,10 +120,10 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
         
         float xDistanceBetweenPreviousMousePositions = _previousMousePositions[0].x - _previousMousePositions[1].x;
-        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        xDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
         float yDistanceBetweenPreviousMousePositions = _previousMousePositions[1].y - _previousMousePositions[0].y;
-        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * Time.deltaTime;
+        yDistanceBetweenPreviousMousePositions *= _rotationSpeed * 0.01f; //* Time.deltaTime;
         
         _planetPuzzleController.SatelliteOrbXDistanceToRotate += xDistanceBetweenPreviousMousePositions;
         _planetPuzzleController.SatelliteOrbYDistanceToRotate += yDistanceBetweenPreviousMousePositions;
