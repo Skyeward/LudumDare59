@@ -352,7 +352,7 @@ PrefabInstance:
     - target: {fileID: 4272994477964448296, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
       propertyPath: SatelliteOrbMeshPrefab
       value: 
-      objectReference: {fileID: 919132149155446097, guid: 858cb98e77fcd574a937b027992d3260, type: 3}
+      objectReference: {fileID: 4239972021121982605, guid: 592c794d302830b409ace1fd18b39de6, type: 3}
     - target: {fileID: 7585340303964465215, guid: 3829a906c0dca5f46ad3aee2a90afeab, type: 3}
       propertyPath: m_Name
       value: PlanetPuzzle
