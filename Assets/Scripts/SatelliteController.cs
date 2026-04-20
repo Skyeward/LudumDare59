@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +11,7 @@ public class SatelliteController : MonoBehaviour
 
     private float baseY;
     private float timeOffset;
+    public Collider ObstacleDetectionCollider;
     public GameObject SignalSphere;
     [SerializeField] private LineRenderer _guideLine;
     private bool _pulsingSignal = false;
@@ -19,6 +23,9 @@ public class SatelliteController : MonoBehaviour
     [SerializeField] private Renderer signalRenderer;
     [SerializeField] private Color baseColor = Color.yellow;
     [SerializeField] private float emissionStrength = 3f;
+    [SerializeField] private LayerMask _obstacleLayer;
+    private List<Collider> _triggerList = new List<Collider>();
+    
     private string _currentDistanceText = "";
 
     private Vector3 _baseScale;
@@ -26,11 +33,11 @@ public class SatelliteController : MonoBehaviour
     void Start()
     {
         // Random starting Y rotation
-        baseY = Random.Range(0f, 360f);
-        yRotationSpeed *= Random.Range(0.6f, 1.4f);
+        baseY = UnityEngine.Random.Range(0f, 360f);
+        yRotationSpeed *= UnityEngine.Random.Range(0.6f, 1.4f);
 
         // Optional: desync wobble too (prevents identical motion)
-        timeOffset = Random.Range(0f, 100f);
+        timeOffset = UnityEngine.Random.Range(0f, 100f);
     }
 
     void Update()
@@ -54,6 +61,31 @@ public class SatelliteController : MonoBehaviour
             signalRenderer.material.SetColor("_EmissionColor", emission);
         }
     }
+    
+    
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("OnTriggerEnter");
+        
+        if ((_obstacleLayer == (_obstacleLayer | (1 << other.gameObject.layer))) && !_triggerList.Contains(other))
+        {
+            _triggerList.Add(other);
+            Debug.Log("adding collider to list");
+        }
+    }
+
+
+    void OnTriggerExit(Collider other)
+    {
+        if (_obstacleLayer == (_obstacleLayer | (1 << other.gameObject.layer)))
+        {
+            if (_triggerList.Contains(other))
+            {
+                _triggerList.Remove(other);
+            }
+        }
+    }
+    
 
     public void ShowGuideLine()
     {
@@ -106,4 +138,9 @@ public class SatelliteController : MonoBehaviour
         _distanceText.gameObject.SetActive(false);
     }
 
+
+    public int GetObstacleCollisionCount()
+    {
+        return _triggerList.Count;
+    }
 }
