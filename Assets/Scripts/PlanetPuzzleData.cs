@@ -60,13 +60,13 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
 {
     public TestPlanetPuzzleData()
     {
-        PlanetPrefabName = "PlanetBlueGreen";
+        PlanetPrefabName = "PurpleMoon";
         PlanetName = "The Pale Bluish Green Dot";
         PlanetDesignation = "A1GD-M";
         PlanetRadius = 0.98f;
         CameraDistance = 4.5f;
         IsRandomizingStartingSatelliteRotation = false;
-        BestSolutionDistance = 0.29f;
+        BestSolutionDistance = 0.31f;
         WorstSolutionDistance = 2.44f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
@@ -78,7 +78,7 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         };
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
-        MeshColour = new Color32(0xB7, 0xFF, 0xF7, 0xFF); // #B7FFF7
+        MeshColour = new Color32(0x96, 0x7C, 0xC9, 0xFF); // #967CC9
         SetWinThresholdPercentage(95);
     }
 }
@@ -91,8 +91,8 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         PlanetPrefabName = "SeaglassGiant";
         PlanetName = "The Test";
         PlanetDesignation = "A1PD-N";
-        PlanetRadius = 1.1f;
-        CameraDistance = 4.7f;
+        PlanetRadius = 1.2f;
+        CameraDistance = 5.7f;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 1.14f;
         WorstSolutionDistance = 5.45f;
@@ -108,7 +108,7 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         };
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
-        MeshColour = new Color32(0xFF, 0xB7, 0xFA, 0xFF); // #FFB7FA
+        MeshColour = new Color32(0x84, 0xBF, 0xCE, 0xFF); // #84BFCE
         SetWinThresholdPercentage(90);
     }
 }
@@ -118,11 +118,11 @@ public class DoubleTowerPuzzleData : PlanetPuzzleData
 {
     public DoubleTowerPuzzleData()
     {
-        PlanetPrefabName = "Orange";
+        PlanetPrefabName = "FireBall";
         PlanetName = "The Test";
         PlanetDesignation = "A1PD-N";
-        PlanetRadius = 0.7f;
-        CameraDistance = 4.5f;
+        PlanetRadius = 0.5f;
+        CameraDistance = 3.5f;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 0.79f;
         WorstSolutionDistance = 3.48f;
