@@ -17,9 +17,16 @@ public class AudioManager : MonoBehaviour
     private Dictionary<Type, string> _planetClips = new Dictionary<Type, string>()
     {
         {typeof(Planet1Purple), "001_E2"},
-        {typeof(Planet2Seaglass), "B2"},
-        {typeof(Planet3Orange), "001_E2"},
-        {typeof(Planet4Pearlescent), "B2"},
+        {typeof(Planet2Seaglass), "002_B2"},
+        {typeof(Planet3Orange), "004_A4"},
+        {typeof(Planet4Pearlescent), "004_A4"},
+    };
+    private Dictionary<Type, float> _planetVolumeMultipliers = new Dictionary<Type, float>()
+    {
+        {typeof(Planet1Purple), 1f},
+        {typeof(Planet2Seaglass), 1f},
+        {typeof(Planet3Orange), 0.5f},
+        {typeof(Planet4Pearlescent), 0.5f},
     };
     private Dictionary<Type, PlanetAudio> _planetAudioInstances = new Dictionary<Type, PlanetAudio>();
     
@@ -133,7 +140,7 @@ public class AudioManager : MonoBehaviour
         float totalVolume = 0.4f;
         
         float disconnectSignalTargetVolume = totalVolume - (puzzleData.CompletionPercentage * totalVolume / 100f);
-        float planetsTargetVolume = totalVolume - disconnectSignalTargetVolume;
+        float planetsTargetVolume = (totalVolume - disconnectSignalTargetVolume) * _planetVolumeMultipliers[puzzleType];
         
         planetAudio.SetVolumes(planetsTargetVolume, disconnectSignalTargetVolume);
     }

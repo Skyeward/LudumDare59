@@ -9,7 +9,7 @@ public class PlanetAudio : MonoBehaviour
     private float _planetsVolumeChangeSpeed = 0.5f;
     private float _disconnectSignalTargetVolume = 0;
     private float _disconnectSignalVolumeChangeSpeed = 0.5f;
-    private float _maxVolume = 0.4f;
+    private float _maxVolume = 1;
     
     
     private void Update()
