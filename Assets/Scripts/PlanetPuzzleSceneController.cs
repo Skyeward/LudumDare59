@@ -20,8 +20,11 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private List<Vector3> _cameraPositionsMenuStages = new List<Vector3>()
     {
-        new Vector3(2.45f, -0.88f, -7.74f)
+        new Vector3(2.45f, -0.88f, -5.26f),
+        new Vector3(2.45f, -0.88f, -15.19f),
+        new Vector3(2.45f, -0.88f, -22.93f),
     };
+
     public GameThreadStage CurrentGameThreadStage;
     private GameProgress _gameProgress;
     
@@ -38,7 +41,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         if (CurrentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
         {
-            Debug.Log("Waiting for planet selection...");
             CheckPlanetRaycasts();
         }
 
@@ -190,7 +192,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void CheckPlanetRaycasts()
     {
-        Debug.Log("Checking planet raycasts...");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         PlanetPuzzleController hoveredPlanetPuzzleController = null;
@@ -273,12 +274,49 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             planetPuzzleController.TransitionToMenuMode(planetPuzzleController == currentPuzzleController);
         }
         
-        yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[0]));
+        // slide from old to new position here?? 
+        yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
         
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
-}
 
+
+    private int GetNumberOfSolvedPuzzles()
+    {
+        int solvedCount = 0;
+
+        foreach (PlanetPuzzleController controller in _planetPuzzleControllers)
+        {
+            if (controller.MyPuzzleData.CompletionPercentage >= controller.MyPuzzleData.GetWinThresholdPercentage())
+            {
+                Debug.Log($"Solved puzzle: {controller.MyPuzzleData.PlanetName} ({controller.MyPuzzleData.CompletionPercentage}% of {controller.MyPuzzleData.GetWinThresholdPercentage()}% threshold)");
+                solvedCount++;
+            }
+        }
+
+        Debug.Log($"Solved count = {solvedCount}");
+        return solvedCount;
+    }
+
+    private int GetMenuCameraIndex()
+    {
+        int solvedPuzzles = GetNumberOfSolvedPuzzles();
+
+        if (solvedPuzzles == 0)
+        {
+            return 0;
+        }
+        else if (solvedPuzzles < 3)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
+}
 
 public enum GameThreadStage
 {

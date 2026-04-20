@@ -14,11 +14,28 @@ public class PlanetPuzzleData
     public List<SphereCoordinate> SatelliteCoordinates;
     public List<SphereCoordinate> DoubleRadioTowerCoordinates;
     public List<SphereCoordinate> DoubleSatelliteCoordinates;
-    public int CompletionPercentage;
-    public int WinThresholdPercentage;
+    public int CompletionPercentage = 0;
+    private int _winThresholdPercentage;
     public float BestSolutionDistance;
     public float WorstSolutionDistance;
     public Color MeshColour;
+
+
+    public void SetWinThresholdPercentage(int percentage)
+    {
+        _winThresholdPercentage = percentage;
+    }
+
+    public int GetWinThresholdPercentage()
+    {
+        return _winThresholdPercentage;
+    }
+
+
+    public bool Complete()
+    {
+        return CompletionPercentage >= _winThresholdPercentage;
+    }
 }
 
 
@@ -48,8 +65,9 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         PlanetDesignation = "A1GD-M";
         PlanetRadius = 0.98f;
         CameraDistance = 4.5f;
-        WinThresholdPercentage = 95;
         IsRandomizingStartingSatelliteRotation = false;
+        BestSolutionDistance = 0.29f;
+        WorstSolutionDistance = 2.44f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(90, 70)
@@ -61,6 +79,7 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
         MeshColour = new Color32(0xB7, 0xFF, 0xF7, 0xFF); // #B7FFF7
+        SetWinThresholdPercentage(95);
     }
 }
 
@@ -74,7 +93,6 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         PlanetDesignation = "A1PD-N";
         PlanetRadius = 1.1f;
         CameraDistance = 4.7f;
-        WinThresholdPercentage = 90;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 1.14f;
         WorstSolutionDistance = 5.45f;
@@ -91,6 +109,7 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
         MeshColour = new Color32(0xFF, 0xB7, 0xFA, 0xFF); // #FFB7FA
+        SetWinThresholdPercentage(90);
     }
 }
 
@@ -123,6 +142,7 @@ public class DoubleTowerPuzzleData : PlanetPuzzleData
         {
         };
         MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
+        SetWinThresholdPercentage(90);
     }
 }
 
@@ -155,5 +175,6 @@ public class DoubleSatellitePuzzleData : PlanetPuzzleData
             new SphereCoordinate(20, -10),
         };
         MeshColour = new Color32(0xFF, 0xCB, 0xAC, 0xFF); // #FFCBAC
+        SetWinThresholdPercentage(90);
     }
 }
