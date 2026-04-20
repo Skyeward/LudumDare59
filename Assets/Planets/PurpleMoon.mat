@@ -52,7 +52,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Shallows_Width: 0.05
-    - _Surface_Color_Saturation: 0.4
+    - _Surface_Color_Saturation: 0.78
     - _Surface_Noise_Scale: 1
     m_Colors:
     - _Fresnel_Color: {r: 0.18683265, g: 0.17962655, b: 0.1730429, a: 1}
