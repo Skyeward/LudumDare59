@@ -3,6 +3,7 @@ using UnityEngine;
 public class WireEnergyController : MonoBehaviour
 {
     public MeshRenderer targetRenderer;
+    MaterialPropertyBlock block;
 
     public int pulseCount = 14;
 
@@ -24,6 +25,19 @@ public class WireEnergyController : MonoBehaviour
             Spawn(i);
 
         mat.SetInt("_PulseCount", pulseCount);
+    }
+
+
+    public void SetColor(Color c)
+    {
+
+        if (block == null)
+        {
+            block = new MaterialPropertyBlock();
+        }
+        targetRenderer.GetPropertyBlock(block);
+        block.SetColor("_GlowColor", c);
+        targetRenderer.SetPropertyBlock(block);
     }
 
     void Update()
@@ -50,7 +64,7 @@ public class WireEnergyController : MonoBehaviour
 
             float phase = i * 17.3f;
 
-            // local flow field
+            // same flow field as before
             Vector3 local = new Vector3(
                 Mathf.PerlinNoise(phase, t * 0.15f),
                 Mathf.PerlinNoise(phase + 11.7f, t * 0.15f),
@@ -62,30 +76,35 @@ public class WireEnergyController : MonoBehaviour
 
             Vector3 dir = (local * 0.6f + globalFlow * 0.4f).normalized;
 
-            // inertia motion (critical for stability)
+            // inertia
             vel = Vector3.Lerp(vel, dir, dt * 2.0f);
             vel *= 0.98f;
 
+            // 🔥 PROJECT ONTO SURFACE (THIS is the important part)
+            Vector3 normal = pos.normalized;
+            vel = Vector3.ProjectOnPlane(vel, normal);
+
+            // keep speed consistent
+            vel = vel.normalized * 0.5f;
+
             velocities[i] = vel;
 
-            pos += vel * 0.8f * dt;
+            // move
+            pos += vel * dt;
 
-            // wrap (stable, no snapping)
-            if (pos.magnitude > 1.5f)
-                pos = -pos.normalized * 1.05f;
+            // 🔥 FORCE BACK TO SURFACE (prevents drift)
+            pos = pos.normalized;
 
-            // energy (smooth, non-binary)
+            // energy stays unchanged
             float energy = Mathf.PerlinNoise(
                 phase + Mathf.Sin(t * 0.37f) * 10.0f,
                 t * 0.11f + phase * 0.13f
             );
-            float target = Mathf.Lerp(0.3f, 0.9f, energy);
 
+            float target = Mathf.Lerp(0.3f, 0.9f, energy);
             p.w = Mathf.Lerp(p.w, target, dt * 1.5f);
 
             pulses[i] = new Vector4(pos.x, pos.y, pos.z, p.w);
-
-            velocityArray[i] = new Vector4(vel.x, vel.y, vel.z, 0);
         }
 
         targetRenderer.material.SetVectorArray("_Pulses", pulses);

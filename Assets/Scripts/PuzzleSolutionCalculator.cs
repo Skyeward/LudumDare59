@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class PuzzleAnalyzer
 {
     [MenuItem("Tools/Analyze Test Puzzle")]
     public static void Analyze()
     {
-        var data = new TestPlanetPuzzleData2();
+        var data = new TestPlanetPuzzleData();
 
         ComputeBounds(data, 100000, out float best, out float worst);
 
@@ -24,6 +25,62 @@ public class PuzzleAnalyzer
         float z = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
 
         return new Vector3(x, y, z);
+    }
+
+
+    static void ExpandPuzzleData(
+        PlanetPuzzleData data,
+        out Vector3[] towers,
+        out Vector3[] satellites)
+    {
+        List<Vector3> towerList = new List<Vector3>();
+        List<Vector3> satelliteList = new List<Vector3>();
+
+        float towerRadius = data.PlanetRadius;
+        float satRadius = data.PlanetRadius * 1.5f;
+
+        // --- Single towers ---
+        foreach (var coord in data.RadioTowerCoordinates)
+        {
+            towerList.Add(ToCartesian(coord, towerRadius));
+        }
+
+        // --- Double towers (add twice) ---
+        foreach (var coord in data.DoubleRadioTowerCoordinates)
+        {
+            Vector3 pos = ToCartesian(coord, towerRadius);
+
+            towerList.Add(pos);
+            towerList.Add(pos);
+        }
+
+        // --- Single satellites ---
+        foreach (var coord in data.SatelliteCoordinates)
+        {
+            satelliteList.Add(ToCartesian(coord, satRadius));
+        }
+
+        // --- (Future) Double satellites ---
+        if (data.DoubleSatelliteCoordinates != null)
+        {
+            foreach (var coord in data.DoubleSatelliteCoordinates)
+            {
+                Vector3 pos = ToCartesian(coord, satRadius);
+
+                satelliteList.Add(pos);
+                satelliteList.Add(pos);
+            }
+        }
+
+        // --- Safety check ---
+        if (towerList.Count != satelliteList.Count)
+        {
+            throw new System.Exception(
+                $"Mismatch: towers={towerList.Count}, satellites={satelliteList.Count}");
+        }
+
+        towers = towerList.ToArray();
+        satellites = satelliteList.ToArray();
     }
 
 
@@ -66,16 +123,9 @@ public class PuzzleAnalyzer
         out float best,
         out float worst)
     {
-        int n = data.RadioTowerCoordinates.Count;
+        ExpandPuzzleData(data, out Vector3[] towers, out Vector3[] satellites);
 
-        Vector3[] towers = new Vector3[n];
-        Vector3[] satellites = new Vector3[n];
-
-        for (int i = 0; i < n; i++)
-        {
-            towers[i] = ToCartesian(data.RadioTowerCoordinates[i], data.PlanetRadius);
-            satellites[i] = ToCartesian(data.SatelliteCoordinates[i], data.PlanetRadius * 1.5f); // outer sphere
-        }
+        int n = towers.Length;
 
         best = float.MaxValue;
         worst = float.MinValue;

@@ -42,55 +42,47 @@ Shader "Custom/WireMeshOrganic"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.worldPos = v.vertex.xyz;
                 return o;
             }
-float4 frag(v2f i) : SV_Target
-{
-    float glow = 0;
 
-    float3 worldPos = i.worldPos;
+            float4 frag(v2f i) : SV_Target
+            {
+                float glow = 0;
 
-    for (int p = 0; p < _PulseCount; p++)
-    {
-        float3 pos = _Pulses[p].xyz;
-        float intensity = _Pulses[p].w;
-        float3 vel = _Velocities[p].xyz;
+                // normalize mesh position into unit sphere space
+                float3 localPos = normalize(i.worldPos);
 
-        float3 toPixel = worldPos - pos;
-        float d = length(toPixel);
+                for (int p = 0; p < _PulseCount; p++)
+                {
+                    float3 pos = _Pulses[p].xyz;
+                    float intensity = _Pulses[p].w;
+                    float3 vel = _Velocities[p].xyz;
 
-        float3 dir = normalize(vel + 1e-5);
-        float3 toPixelDir = normalize(toPixel + 1e-5);
+                    float3 toPixel = localPos - pos;
+                    float d = length(toPixel);
 
-        float alignment = dot(toPixelDir, dir) * 0.5 + 0.5;
+                    float3 dir = normalize(vel + 1e-5);
+                    float3 toPixelDir = normalize(toPixel + 1e-5);
 
-        // slightly wider falloff (visibility recovery)
-        float influence = exp(-d * d * 8.0) * alignment * intensity;
+                    float alignment = dot(toPixelDir, dir) * 0.5 + 0.5;
 
-        glow += influence;
-    }
+                    // stable, localised falloff
+                    float influence = exp(-d * d * 18.0) * alignment * intensity;
 
-    // -------------------------------
-    // FIX 1: visibility gain (restores brightness)
-    // -------------------------------
-    glow *= 3.5;
+                    glow += influence;
+                }
 
-    // -------------------------------
-    // FIX 2: soft compression (prevents full whiteout)
-    // -------------------------------
-    glow = glow / (1.0 + glow);
+                glow *= 2.8;
+                glow = glow / (1.0 + glow);
+                glow = pow(glow, 1.3);
 
-    // -------------------------------
-    // FIX 3: mild contrast boost (not destructive)
-    // -------------------------------
-    glow = pow(glow, 1.3);
+                float alpha = glow;
+                float3 color = _GlowColor.rgb * glow;
 
-    float alpha = glow;
-    float3 color = _GlowColor.rgb * glow;
+                return float4(color, alpha);
+            }
 
-    return float4(color, alpha);
-}
             ENDHLSL
         }
     }

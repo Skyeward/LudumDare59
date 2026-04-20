@@ -1489,7 +1489,9 @@ MonoBehaviour:
   SatelliteParentTransform: {fileID: 4646311020010018176}
   RadioTowers: []
   Satellites: []
-  SatelliteOrbMeshPrefab: {fileID: 4198220518026237287, guid: 897a0b28b3a762b4e93b0cbe6648c28f, type: 3}
+  DoubleRadioTowers: []
+  DoubleSatellites: []
+  SatelliteOrbMeshPrefab: {fileID: 4239972021121982605, guid: 592c794d302830b409ace1fd18b39de6, type: 3}
   _puzzleCanvasRT: {fileID: 5988660460298314831}
   _puzzleCanvasCG: {fileID: 5582950556533677367}
   _fadeablePuzzleTMPs:

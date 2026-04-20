@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,6 +11,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     [SerializeField] private LayerMask _planetLayerMask;
     [SerializeField] private LayerMask _puzzleButtonLayerMask;
     [SerializeField] private AnimationCurve _cameraSlideCurve;
+    public AudioManager MyAudioManager;
     private PlanetPuzzleController _currentPlanetPuzzleController;
     
     private bool _isRotatingSatelliteOrb = false;
@@ -19,15 +21,24 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private List<Vector3> _cameraPositionsMenuStages = new List<Vector3>()
     {
-        new Vector3(2.45f, -0.88f, -7.74f)
+        new Vector3(2.45f, -0.88f, -5.26f),
+        new Vector3(2.45f, -0.88f, -15.19f),
+        new Vector3(2.45f, -0.88f, -22.93f),
     };
+
     public GameThreadStage CurrentGameThreadStage;
+    private GameProgress _gameProgress;
+    private int previousMenuCameraIndex = 0;
     
     
     private void Start()
     {
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        
+        _gameProgress = new GameProgress();
+        
+        MyAudioManager.EnterMainMenu();
     }
     
     
@@ -35,7 +46,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         if (CurrentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
         {
-            Debug.Log("Waiting for planet selection...");
             CheckPlanetRaycasts();
         }
 
@@ -51,6 +61,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                 {
                     if (button.MyButtonType == ButtonType.LeavePuzzle)
                     {
+                        MyAudioManager.EnterMainMenu();
+                        MyAudioManager.ExitPuzzle(_planetPuzzleControllers.Select(puzzCon => puzzCon.MyPuzzleData).ToList());
                         StartCoroutine(LeavePuzzle(button.MyController));
                     }
                     else if (button.MyButtonType == ButtonType.Satellite)
@@ -58,6 +70,9 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                         int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
                         Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
                         _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
+                        _gameProgress.PlanetPuzzles = _planetPuzzleControllers.Select(controller => controller.MyPuzzleData).ToList();
+
+
                     }
                 }
             }
@@ -79,6 +94,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
     }
     
+
+    public void UpdateOverallCompletionPercentage()
+    {
+        _gameProgress.UpdateOverallCompletionPercentage();
+        Debug.Log($"Overall completion: {_gameProgress.OverallCompletionPercentage}%");
+    }
     
     
     private void SaveMousePosition()
@@ -178,7 +199,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void CheckPlanetRaycasts()
     {
-        Debug.Log("Checking planet raycasts...");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         PlanetPuzzleController hoveredPlanetPuzzleController = null;
@@ -196,6 +216,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && hoveredPlanetPuzzleController != null)
         {
             StartCoroutine(SelectPlanetPuzzle(hoveredPlanetPuzzleController));
+            MyAudioManager.ExitMainMenu();
+            MyAudioManager.EnterPuzzle(hoveredPlanetPuzzleController.MyPuzzleData);
         }
     }
     
@@ -260,13 +282,56 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         {
             planetPuzzleController.TransitionToMenuMode(planetPuzzleController == currentPuzzleController);
         }
+
+        if(previousMenuCameraIndex != GetMenuCameraIndex())
+        {
+            yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[previousMenuCameraIndex]));
+            previousMenuCameraIndex = GetMenuCameraIndex();
+        }
         
-        yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[0]));
+        // slide from old to new position here?? 
+        yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
         
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
-}
 
+
+    private int GetNumberOfSolvedPuzzles()
+    {
+        int solvedCount = 0;
+
+        foreach (PlanetPuzzleController controller in _planetPuzzleControllers)
+        {
+            if (controller.MyPuzzleData.CompletionPercentage >= controller.MyPuzzleData.GetWinThresholdPercentage())
+            {
+                Debug.Log($"Solved puzzle: {controller.MyPuzzleData.PlanetName} ({controller.MyPuzzleData.CompletionPercentage}% of {controller.MyPuzzleData.GetWinThresholdPercentage()}% threshold)");
+                solvedCount++;
+            }
+        }
+
+        Debug.Log($"Solved count = {solvedCount}");
+        return solvedCount;
+    }
+
+    private int GetMenuCameraIndex()
+    {
+        int solvedPuzzles = GetNumberOfSolvedPuzzles();
+
+        if (solvedPuzzles == 0)
+        {
+            return Math.Max(0, previousMenuCameraIndex);
+        }
+        else if (solvedPuzzles < 3)
+        {
+            return Math.Max(1, previousMenuCameraIndex);
+        }
+        else
+        {
+            return Math.Max(2, previousMenuCameraIndex);
+        }
+    }
+
+}
 
 public enum GameThreadStage
 {
