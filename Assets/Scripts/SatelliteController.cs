@@ -19,6 +19,7 @@ public class SatelliteController : MonoBehaviour
     [SerializeField] private Renderer signalRenderer;
     [SerializeField] private Color baseColor = Color.yellow;
     [SerializeField] private float emissionStrength = 3f;
+    private string _currentDistanceText = "";
 
     private Vector3 _baseScale;
 
@@ -69,15 +70,29 @@ public class SatelliteController : MonoBehaviour
 
     public void StartPulsingSignal(string distanceText)
     {
-        _baseScale = SignalSphere.transform.localScale;
-        _pulsingSignal = true;
-        if(_lightMaterial != null)
+        if(!_pulsingSignal)
         {
-            SignalSphere.GetComponent<MeshRenderer>().material = _lightMaterial;
+            _baseScale = SignalSphere.transform.localScale;
+            _pulsingSignal = true;
+            if(_lightMaterial != null)
+            {
+                SignalSphere.GetComponent<MeshRenderer>().material = _lightMaterial;
+            }
+
         }
 
-        _distanceText.text = distanceText;
-        _distanceText.gameObject.SetActive(true);
+        if(_currentDistanceText == "")
+        {
+                _currentDistanceText = distanceText;
+                _distanceText.text = distanceText;
+                _distanceText.gameObject.SetActive(true); 
+        }
+        else
+        {
+            _currentDistanceText += " & " + distanceText;
+            _distanceText.text = _currentDistanceText;
+        }
+        
     }
 
 
@@ -87,6 +102,7 @@ public class SatelliteController : MonoBehaviour
         SignalSphere.transform.localScale = _baseScale;
         SignalSphere.GetComponent<MeshRenderer>().material = _baseMaterial;
 
+        _currentDistanceText = "";
         _distanceText.gameObject.SetActive(false);
     }
 
