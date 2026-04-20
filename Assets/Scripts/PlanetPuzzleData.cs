@@ -12,6 +12,8 @@ public class PlanetPuzzleData
     public List<SphereCoordinate> RadioTowerCoordinates;
     public List<SphereCoordinate> SatelliteCoordinates;
     public int CompletionPercentage;
+    public float BestSolutionDistance;
+    public float WorstSolutionDistance;
 }
 
 
@@ -64,6 +66,8 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         PlanetRadius = 1.1f;
         CameraDistance = 4.7f;
         IsRandomizingStartingSatelliteRotation = false;
+        BestSolutionDistance = 1.14f;
+        WorstSolutionDistance = 5.45f;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
             new SphereCoordinate(20, -10),
