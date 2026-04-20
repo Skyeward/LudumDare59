@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -22,12 +23,14 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         new Vector3(2.45f, -0.88f, -7.74f)
     };
     public GameThreadStage CurrentGameThreadStage;
+    private GameProgress _gameProgress;
     
     
     private void Start()
     {
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        _gameProgress = new GameProgress();
     }
     
     
@@ -58,6 +61,9 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                         int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
                         Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
                         _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
+                        _gameProgress.PlanetPuzzles = _planetPuzzleControllers.Select(controller => controller.MyPuzzleData).ToList();
+
+
                     }
                 }
             }
@@ -79,6 +85,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         }
     }
     
+
+    public void UpdateOverallCompletionPercentage()
+    {
+        _gameProgress.UpdateOverallCompletionPercentage();
+        Debug.Log($"Overall completion: {_gameProgress.OverallCompletionPercentage}%");
+    }
     
     
     private void SaveMousePosition()
