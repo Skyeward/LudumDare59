@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Planet Glow 2
+  m_Name: Planet Glow 8
   m_Shader: {fileID: -6465566751694194690, guid: 342695ad3349c8e449bd965e41a5f142, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,7 +42,7 @@ Material:
     - _Glow_Intensity: 1
     - _OMNIDIRECTIONAL_SPACE_LIGHTING: 0
     m_Colors:
-    - _Glow_Color: {r: 0.15152144, g: 0.4408039, b: 0.5921993, a: 1}
-    - _Object_Position: {r: 5.72, g: -2.05, b: -7.01, a: 0}
+    - _Glow_Color: {r: 0.2451097, g: 0.5075493, b: 0.6101005, a: 1}
+    - _Object_Position: {r: 9.070029, g: 21.144659, b: -30.731922, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

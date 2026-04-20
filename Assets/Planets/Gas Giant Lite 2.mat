@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gas Giant Lite
+  m_Name: Gas Giant Lite 2
   m_Shader: {fileID: -6465566751694194690, guid: e33033f0876015f4eb18945515c81d90, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Color_Gradient_Texture:
-        m_Texture: {fileID: 2800000, guid: 10b841c105e80164fafef407654643d9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6ed3080262487b04baf6940903d1dd5e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -43,26 +43,26 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Color_Saturation: 1.1
+    - _Color_Saturation: 1
     - _Filtering_Detail: 4
-    - _Flow_Speed: 0.004115763
+    - _Flow_Speed: 0.004214024
     - _Fresnel_Power: 10
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 0.7575607
+    - _Scale: 0.48051322
     - _Smoothness: 0
     - _USELIGHTOCCLUSION: 1
-    - _X_Scaling: 0.010577601
-    - _Y_Gradient_Scale: 0.45186478
-    - _Y_Gradient_Strength: 0.074047945
-    - _Z_Scaling: 0.13602522
+    - _X_Scaling: 0.1438337
+    - _Y_Gradient_Scale: 0.73431575
+    - _Y_Gradient_Strength: 0.035527457
+    - _Z_Scaling: 0.118070856
     m_Colors:
-    - _Fresnel_Color: {r: 0.8352941, g: 0.7599305, b: 0.39215687, a: 1}
-    - _Randomization_Offset: {r: 431.68536, g: -457.0044, b: -69.90109, a: 0}
+    - _Fresnel_Color: {r: 0.6289307, g: 0.41567746, b: 0.25117666, a: 1}
+    - _Randomization_Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &546042912704288057
+--- !u!114 &8503986048071548586
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

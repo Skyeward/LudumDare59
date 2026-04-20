@@ -56,9 +56,9 @@ public class PlanetPuzzleData
 // }
 
 
-public class TestPlanetPuzzleData : PlanetPuzzleData
+public class Planet1Purple : PlanetPuzzleData
 {
-    public TestPlanetPuzzleData()
+    public Planet1Purple()
     {
         PlanetPrefabName = "PurpleMoon";
         PlanetName = "The Pale Bluish Green Dot";
@@ -84,9 +84,9 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
 }
 
 
-public class TestPlanetPuzzleData2 : PlanetPuzzleData
+public class Planet2Seaglass : PlanetPuzzleData
 {
-    public TestPlanetPuzzleData2()
+    public Planet2Seaglass()
     {
         PlanetPrefabName = "SeaglassGiant";
         PlanetName = "The Test";
@@ -114,9 +114,9 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
 }
 
 
-public class DoubleTowerPuzzleData : PlanetPuzzleData
+public class Planet3Orange : PlanetPuzzleData
 {
-    public DoubleTowerPuzzleData()
+    public Planet3Orange()
     {
         PlanetPrefabName = "FireBall";
         PlanetName = "The Test";
@@ -147,9 +147,9 @@ public class DoubleTowerPuzzleData : PlanetPuzzleData
 }
 
 
-public class DoubleSatellitePuzzleData : PlanetPuzzleData
+public class Planet4Pearlescent : PlanetPuzzleData
 {
-    public DoubleSatellitePuzzleData()
+    public Planet4Pearlescent()
     {
         PlanetPrefabName = "Terracotta";
         PlanetName = "The Test";
@@ -175,6 +175,138 @@ public class DoubleSatellitePuzzleData : PlanetPuzzleData
             new SphereCoordinate(20, -10),
         };
         MeshColour = new Color32(0xFF, 0xCB, 0xAC, 0xFF); // #FFCBAC
+        SetWinThresholdPercentage(90);
+    }
+}
+
+
+public class Planet5RedBlue : PlanetPuzzleData
+{
+    public Planet5RedBlue()
+    {
+        PlanetPrefabName = "FireBall";
+        PlanetName = "The Test";
+        PlanetDesignation = "A1PD-N";
+        PlanetRadius = 0.5f;
+        CameraDistance = 3.5f;
+        IsRandomizingStartingSatelliteRotation = false;
+        BestSolutionDistance = 0.79f;
+        WorstSolutionDistance = 3.48f;
+        RadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        SatelliteCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(180, 30),
+            new SphereCoordinate(160, 15),
+        };
+        DoubleRadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(20, -10),
+        };
+        DoubleSatelliteCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
+        SetWinThresholdPercentage(90);
+    }
+}
+
+
+public class Planet6Turquoise : PlanetPuzzleData
+{
+    public Planet6Turquoise()
+    {
+        PlanetPrefabName = "FireBall";
+        PlanetName = "The Test";
+        PlanetDesignation = "A1PD-N";
+        PlanetRadius = 0.5f;
+        CameraDistance = 3.5f;
+        IsRandomizingStartingSatelliteRotation = false;
+        BestSolutionDistance = 0.79f;
+        WorstSolutionDistance = 3.48f;
+        RadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        SatelliteCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(180, 30),
+            new SphereCoordinate(160, 15),
+        };
+        DoubleRadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(20, -10),
+        };
+        DoubleSatelliteCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
+        SetWinThresholdPercentage(90);
+    }
+}
+
+
+public class Planet7Blue : PlanetPuzzleData
+{
+    public Planet7Blue()
+        {
+            PlanetPrefabName = "FireBall";
+            PlanetName = "The Test";
+            PlanetDesignation = "A1PD-N";
+            PlanetRadius = 0.5f;
+            CameraDistance = 3.5f;
+            IsRandomizingStartingSatelliteRotation = false;
+            BestSolutionDistance = 0.79f;
+            WorstSolutionDistance = 3.48f;
+            RadioTowerCoordinates = new List<SphereCoordinate>()
+            {
+            };
+            SatelliteCoordinates = new List<SphereCoordinate>()
+            {
+                new SphereCoordinate(180, 30),
+                new SphereCoordinate(160, 15),
+            };
+            DoubleRadioTowerCoordinates = new List<SphereCoordinate>()
+            {
+                new SphereCoordinate(20, -10),
+            };
+            DoubleSatelliteCoordinates = new List<SphereCoordinate>()
+            {
+            };
+            MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
+            SetWinThresholdPercentage(90);
+        }
+}
+
+
+public class Planet8Plasma : PlanetPuzzleData
+{
+    public Planet8Plasma()
+    {
+        PlanetPrefabName = "FireBall";
+        PlanetName = "The Test";
+        PlanetDesignation = "A1PD-N";
+        PlanetRadius = 0.5f;
+        CameraDistance = 3.5f;
+        IsRandomizingStartingSatelliteRotation = false;
+        BestSolutionDistance = 0.79f;
+        WorstSolutionDistance = 3.48f;
+        RadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        SatelliteCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(180, 30),
+            new SphereCoordinate(160, 15),
+        };
+        DoubleRadioTowerCoordinates = new List<SphereCoordinate>()
+        {
+            new SphereCoordinate(20, -10),
+        };
+        DoubleSatelliteCoordinates = new List<SphereCoordinate>()
+        {
+        };
+        MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
         SetWinThresholdPercentage(90);
     }
 }
