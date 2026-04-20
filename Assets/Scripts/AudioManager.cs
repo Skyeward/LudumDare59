@@ -16,16 +16,16 @@ public class AudioManager : MonoBehaviour
     private float _solarWindVolumeChangeSpeed = 0.25f;
     private Dictionary<Type, string> _planetClips = new Dictionary<Type, string>()
     {
-        {typeof(Planet1Purple), "001_E2"},
-        {typeof(Planet2Seaglass), "002_B2"},
-        {typeof(Planet3Orange), "004_A4"},
-        {typeof(Planet4Pearlescent), "004_A4"},
+        {typeof(Planet1Purple), "001"},
+        {typeof(Planet2Seaglass), "002"},
+        {typeof(Planet3Orange), "003"},
+        {typeof(Planet4Pearlescent), "004"},
     };
     private Dictionary<Type, float> _planetVolumeMultipliers = new Dictionary<Type, float>()
     {
         {typeof(Planet1Purple), 1f},
         {typeof(Planet2Seaglass), 1f},
-        {typeof(Planet3Orange), 0.5f},
+        {typeof(Planet3Orange), 1f},
         {typeof(Planet4Pearlescent), 0.5f},
     };
     private Dictionary<Type, PlanetAudio> _planetAudioInstances = new Dictionary<Type, PlanetAudio>();
