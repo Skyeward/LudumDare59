@@ -64,7 +64,7 @@ public class PlanetPuzzleController : MonoBehaviour
         MySceneController = FindAnyObjectByType<PlanetPuzzleSceneController>();
         MyPuzzleData = Activator.CreateInstance(Type.GetType(_planetDataTypeName)) as PlanetPuzzleData;
         SignalCompletionTMP.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -(0.5f + MyPuzzleData.PlanetRadius));
-        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.75f * MyPuzzleData.PlanetRadius, 0.75f * MyPuzzleData.PlanetRadius, 0.75f * MyPuzzleData.PlanetRadius);
+        PlanetSelectionSpriteRenderer.transform.localScale = new Vector3(0.55f * MyPuzzleData.PlanetRadius, 0.55f * MyPuzzleData.PlanetRadius, 0.55f * MyPuzzleData.PlanetRadius);
         
         float scaleSize = MyPuzzleData.CameraDistance / 5.8f;
         Vector3 scale = new Vector3(scaleSize, scaleSize, scaleSize);
@@ -288,6 +288,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
         foreach(TowerSatellitePair pair in CurrentAssignment)
         {
+            MySceneController.MyAudioManager.PlaySatellitePing();
             pair.Tower.GetComponentInChildren<RadioTowerController>().StartPulsingSignal();
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
             DrawConnection(pair, MyPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
