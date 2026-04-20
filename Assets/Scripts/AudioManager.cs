@@ -8,6 +8,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _solarWindAS;
+    [SerializeField] private AudioSource _satellitePingAS;
     [SerializeField] private GameObject _planetAudioPrefab;
     private float _solarWindTargetVolume = 0;
     private float _solarWindMaxVolume = 0.2f;
@@ -98,6 +99,12 @@ public class AudioManager : MonoBehaviour
                 planetAudio.SetVolumes(0, 0);
             }
         }
+    }
+    
+    
+    public void PlaySatellitePing()
+    {
+        _satellitePingAS.Play();
     }
     
     
