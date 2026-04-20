@@ -19,14 +19,14 @@ public class AudioManager : MonoBehaviour
         {typeof(Planet1Purple), "001"},
         {typeof(Planet2Seaglass), "002"},
         {typeof(Planet3Orange), "003"},
-        {typeof(Planet4Pearlescent), "004"},
+        {typeof(Planet4Red), "004"},
     };
     private Dictionary<Type, float> _planetVolumeMultipliers = new Dictionary<Type, float>()
     {
         {typeof(Planet1Purple), 1f},
         {typeof(Planet2Seaglass), 1f},
         {typeof(Planet3Orange), 1f},
-        {typeof(Planet4Pearlescent), 0.5f},
+        {typeof(Planet4Red), 0.5f},
     };
     private Dictionary<Type, PlanetAudio> _planetAudioInstances = new Dictionary<Type, PlanetAudio>();
     

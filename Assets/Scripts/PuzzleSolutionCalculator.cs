@@ -7,7 +7,7 @@ public class PuzzleAnalyzer
     [MenuItem("Tools/Analyze Test Puzzle")]
     public static void Analyze()
     {
-        var data = new Planet1Purple();
+        var data = new Planet7Blue();
 
         ComputeBounds(data, 100000, out float best, out float worst);
 
@@ -37,7 +37,7 @@ public class PuzzleAnalyzer
         List<Vector3> satelliteList = new List<Vector3>();
 
         float towerRadius = data.PlanetRadius;
-        float satRadius = data.PlanetRadius * 1.5f;
+        float satRadius = data.PlanetRadius + 0.55f;
 
         // --- Single towers ---
         foreach (var coord in data.RadioTowerCoordinates)

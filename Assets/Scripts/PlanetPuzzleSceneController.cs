@@ -22,8 +22,9 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     private List<Vector3> _cameraPositionsMenuStages = new List<Vector3>()
     {
         new Vector3(2.45f, -0.88f, -5.26f),
-        new Vector3(2.45f, -0.88f, -15.19f),
-        new Vector3(2.45f, -0.88f, -22.93f),
+        new Vector3(2.45f, -1.9f, -15.19f),
+        new Vector3(5.2f, -2.44f, -22.57f),
+        new Vector3(3.95f, -2.9f, -27.54f),
     };
 
     public GameThreadStage CurrentGameThreadStage;
@@ -33,7 +34,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void Start()
     {
-        Camera.main.transform.position = _cameraPositionsMenuStages[0];
+        Camera.main.transform.position = _cameraPositionsMenuStages[3];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
         
         _gameProgress = new GameProgress();
@@ -344,9 +345,13 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         {
             return Math.Max(1, previousMenuCameraIndex);
         }
-        else
+        else if (solvedPuzzles < 7)
         {
             return Math.Max(2, previousMenuCameraIndex);
+        }
+        else
+        {
+            return Math.Max(3, previousMenuCameraIndex);
         }
     }
 

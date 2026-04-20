@@ -43,6 +43,6 @@ Material:
     - _OMNIDIRECTIONAL_SPACE_LIGHTING: 0
     m_Colors:
     - _Glow_Color: {r: 0.39565554, g: 0.28749037, b: 0.6299083, a: 1}
-    - _Object_Position: {r: -14.7, g: 0, b: 8.89459, a: 0}
+    - _Object_Position: {r: 11.55, g: -2.69, b: -12.27, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

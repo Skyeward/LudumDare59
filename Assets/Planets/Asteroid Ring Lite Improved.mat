@@ -63,13 +63,13 @@ Material:
     m_Floats:
     - _Fade_Strength: 1.62
     - _Flow_Speed: 0.0050550653
-    - _Inner_Radius: 0.12
+    - _Inner_Radius: -0.14
     - _LightFalloffSharpness: 0
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MinBrightnessLevel: 0.72
     - _MinShadowBrightnessLevel: 0
     - _OMNIDIRECTIONAL_SPACE_LIGHTING: 0
-    - _Outer_Radius: 0.2
+    - _Outer_Radius: 0.15
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Ring_Alpha_Threshold: 0

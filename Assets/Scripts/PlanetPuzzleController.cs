@@ -138,7 +138,7 @@ public class PlanetPuzzleController : MonoBehaviour
 
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
-        float satelliteOrbMeshRadius = MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier;
+        float satelliteOrbMeshRadius = MyPuzzleData.PlanetRadius + 0.55f;
         satelliteOrbMeshInstance.transform.localPosition = Vector3.zero;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
 
@@ -165,7 +165,7 @@ public class PlanetPuzzleController : MonoBehaviour
             GameObject satellite = Instantiate(Resources.Load("Satellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, satelliteOrbMeshRadius);
             
             satellite.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = satellite.transform.rotation;
@@ -195,7 +195,7 @@ public class PlanetPuzzleController : MonoBehaviour
             GameObject satellite = Instantiate(Resources.Load("DoubleSatellite")) as GameObject;
             satellite.transform.parent = SatelliteParentTransform;
             
-            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier);
+            satellite.transform.localPosition = SphereCoordinate.GetCartesianPositionFromSphereCoordinate(satelliteCoord, satelliteOrbMeshRadius);
             
             satellite.transform.LookAt(PlanetParentTransform);
             Quaternion currentRotation = satellite.transform.rotation;
@@ -468,44 +468,48 @@ public class PlanetPuzzleController : MonoBehaviour
 
     public int CalculateCurrentPuzzleCompletion()    
     {
-        Dictionary<Vector3, GameObject> radioTowerObjectPositions = new Dictionary<Vector3, GameObject>();
-        Dictionary<Vector3, GameObject> satelliteObjectPositions = new Dictionary<Vector3, GameObject>();
         List<Vector3> towerPositions = new List<Vector3>();
+        List<GameObject> towerObjects = new List<GameObject>();
+
         List<Vector3> satellitePositions = new List<Vector3>();
+        List<GameObject> satelliteObjects = new List<GameObject>();
 
         foreach (GameObject tower in RadioTowers)
         {
             Vector3 localPos = PuzzleParentTransform.InverseTransformPoint(tower.transform.position);
+
             towerPositions.Add(localPos);
-            radioTowerObjectPositions[localPos] = tower;
+            towerObjects.Add(tower);
+        }
+
+        foreach (GameObject doubleTower in DoubleRadioTowers)
+        {
+            Vector3 localPos = PuzzleParentTransform.InverseTransformPoint(doubleTower.transform.position);
+
+            for (int i = 0; i < 2; i++)
+            {
+                towerPositions.Add(localPos);
+                towerObjects.Add(doubleTower);
+            }
         }
 
         foreach (GameObject satellite in Satellites)
         {
             Vector3 localPos = PuzzleParentTransform.InverseTransformPoint(satellite.transform.position);
+
             satellitePositions.Add(localPos);
-            satelliteObjectPositions[localPos] = satellite;
+            satelliteObjects.Add(satellite);
         }
 
-        foreach(GameObject doubleTower in DoubleRadioTowers)
-        {
-            Vector3 localPos = PuzzleParentTransform.InverseTransformPoint(doubleTower.transform.position);
-            for (int i = 0; i < 2; i++)
-            {
-                towerPositions.Add(localPos);
-            }
-
-            radioTowerObjectPositions[localPos] = doubleTower;
-        }
-
-        foreach(GameObject doubleSatellite in DoubleSatellites)
+        foreach (GameObject doubleSatellite in DoubleSatellites)
         {
             Vector3 localPos = PuzzleParentTransform.InverseTransformPoint(doubleSatellite.transform.position);
+
             for (int i = 0; i < 2; i++)
             {
                 satellitePositions.Add(localPos);
+                satelliteObjects.Add(doubleSatellite);
             }
-            satelliteObjectPositions[localPos] = doubleSatellite;
         }
 
         int n = towerPositions.Count;
@@ -527,8 +531,8 @@ public class PlanetPuzzleController : MonoBehaviour
         {
             pairs.Add(new TowerSatellitePair
             (
-                radioTowerObjectPositions[towerPositions[i]],
-                satelliteObjectPositions[satellitePositions[assignment[i]]],
+                towerObjects[i],
+                satelliteObjects[assignment[i]],
                 costMatrix[i, assignment[i]]
             ));
         }
