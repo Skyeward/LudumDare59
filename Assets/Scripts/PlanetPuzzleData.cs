@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 
 public class PlanetPuzzleData
@@ -17,6 +18,7 @@ public class PlanetPuzzleData
     public int WinThresholdPercentage;
     public float BestSolutionDistance;
     public float WorstSolutionDistance;
+    public Color MeshColour;
 }
 
 
@@ -58,6 +60,7 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         };
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
+        MeshColour = new Color32(0xB7, 0xFF, 0xF7, 0xFF); // #B7FFF7
     }
 }
 
@@ -87,6 +90,7 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         };
         DoubleRadioTowerCoordinates = new List<SphereCoordinate>();
         DoubleSatelliteCoordinates = new List<SphereCoordinate>();
+        MeshColour = new Color32(0xFF, 0xB7, 0xFA, 0xFF); // #FFB7FA
     }
 }
 
@@ -118,6 +122,7 @@ public class DoubleTowerPuzzleData : PlanetPuzzleData
         DoubleSatelliteCoordinates = new List<SphereCoordinate>()
         {
         };
+        MeshColour = new Color32(0xFF, 0xF9, 0xAC, 0xFF); // #FFF9AC
     }
 }
 
@@ -149,5 +154,6 @@ public class DoubleSatellitePuzzleData : PlanetPuzzleData
         {
             new SphereCoordinate(20, -10),
         };
+        MeshColour = new Color32(0xFF, 0xCB, 0xAC, 0xFF); // #FFCBAC
     }
 }

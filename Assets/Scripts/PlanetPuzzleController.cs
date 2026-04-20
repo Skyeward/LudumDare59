@@ -136,14 +136,16 @@ public class PlanetPuzzleController : MonoBehaviour
     
     public void SetUpPuzzle()
     {
-        // GameObject planetInstance = Instantiate(Resources.Load($"Planets/{_myPuzzleData.PlanetPrefabName}")) as GameObject;
-        // planetInstance.transform.parent = PlanetParentTransform;
 
         GameObject satelliteOrbMeshInstance = Instantiate(SatelliteOrbMeshPrefab);
         satelliteOrbMeshInstance.transform.parent = SatelliteParentTransform;
         float satelliteOrbMeshRadius = MyPuzzleData.PlanetRadius * _satelliteOrbMeshRadiusMultiplier;
         satelliteOrbMeshInstance.transform.localPosition = Vector3.zero;
         satelliteOrbMeshInstance.transform.localScale = new Vector3(satelliteOrbMeshRadius, satelliteOrbMeshRadius, satelliteOrbMeshRadius);
+
+        WireEnergyController wireEnergyController = satelliteOrbMeshInstance.GetComponentInChildren<WireEnergyController>();
+
+        wireEnergyController.SetColor(MyPuzzleData.MeshColour);
 
         foreach (SphereCoordinate radioTowerCoord in MyPuzzleData.RadioTowerCoordinates)
         {
