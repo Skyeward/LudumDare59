@@ -43,7 +43,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Color_Saturation: 0.7
+    - _Color_Saturation: 1.1
     - _Filtering_Detail: 4
     - _Flow_Speed: 0.004115763
     - _Fresnel_Power: 10

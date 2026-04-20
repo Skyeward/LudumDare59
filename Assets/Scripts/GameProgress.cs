@@ -10,7 +10,6 @@ public class GameProgress
     {
         PlanetPuzzles = new List<PlanetPuzzleData>()
         {
-            new TestPlanetPuzzleData()
         };
         OverallCompletionPercentage = 0;
     }
