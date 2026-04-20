@@ -67,12 +67,13 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                     }
                     else if (button.MyButtonType == ButtonType.Satellite)
                     {
-                        int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
-                        Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
-                        _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
-                        _gameProgress.PlanetPuzzles = _planetPuzzleControllers.Select(controller => controller.MyPuzzleData).ToList();
-
-
+                        if (AreSatellitesClearOfObstacles(_currentPlanetPuzzleController))
+                        {
+                            int puzzleCompletion = _currentPlanetPuzzleController.CalculateCurrentPuzzleCompletion();
+                            Debug.Log($"Current puzzle completion: {puzzleCompletion}%");
+                            _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
+                            _gameProgress.PlanetPuzzles = _planetPuzzleControllers.Select(controller => controller.MyPuzzleData).ToList();
+                        }
                     }
                 }
             }
@@ -92,6 +93,20 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                 _currentPlanetPuzzleController.RotatePuzzle();
             }
         }
+    }
+    
+    
+    private bool AreSatellitesClearOfObstacles(PlanetPuzzleController puzzleController)
+    {
+        foreach (SatelliteController sc in puzzleController.SatelliteParentTransform.GetComponentsInChildren<SatelliteController>())
+        {
+            if (sc.GetObstacleCollisionCount() > 0)
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
 
