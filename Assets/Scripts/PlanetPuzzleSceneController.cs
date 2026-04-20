@@ -27,6 +27,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
 
     public GameThreadStage CurrentGameThreadStage;
     private GameProgress _gameProgress;
+    private int previousMenuCameraIndex = 0;
     
     
     private void Start()
@@ -273,6 +274,12 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         {
             planetPuzzleController.TransitionToMenuMode(planetPuzzleController == currentPuzzleController);
         }
+
+        if(previousMenuCameraIndex != GetMenuCameraIndex())
+        {
+            yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[previousMenuCameraIndex]));
+            previousMenuCameraIndex = GetMenuCameraIndex();
+        }
         
         // slide from old to new position here?? 
         yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
@@ -304,15 +311,15 @@ public class PlanetPuzzleSceneController : MonoBehaviour
 
         if (solvedPuzzles == 0)
         {
-            return 0;
+            return Math.Max(0, previousMenuCameraIndex);
         }
         else if (solvedPuzzles < 3)
         {
-            return 1;
+            return Math.Max(1, previousMenuCameraIndex);
         }
         else
         {
-            return 2;
+            return Math.Max(2, previousMenuCameraIndex);
         }
     }
 
