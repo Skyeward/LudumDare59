@@ -83,7 +83,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WireEnergyController
   targetRenderer: {fileID: 2005235915364553992}
   pulseCount: 8
-  spawnRate: 0.4
 --- !u!4 &837436075431898727 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c93ea43adf24db1458185eeef0d86657, type: 3}
