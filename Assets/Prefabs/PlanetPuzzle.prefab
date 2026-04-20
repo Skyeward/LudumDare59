@@ -1313,7 +1313,6 @@ MonoBehaviour:
   _fadeablePuzzleTMPs:
   - {fileID: 3229631852123910458}
   - {fileID: 7705486144700919641}
-  - {fileID: 5211651738795276123}
   _buttonsParentGO: {fileID: 1334899948161401987}
   _satelliteButtonSR: {fileID: 6509837680985332715}
   _backButtonSR: {fileID: 407817171998895593}
@@ -1321,6 +1320,8 @@ MonoBehaviour:
   _planetDesignationTMP: {fileID: 3229631852123910458}
   _planetNameTMP: {fileID: 7705486144700919641}
   _puzzleSignalPercentageTMP: {fileID: 5211651738795276123}
+  _puzzleCompleteColor: {r: 0.51705015, g: 0.8490566, b: 0.31238863, a: 1}
+  _puzzleIncompleteColor: {r: 0.8742138, g: 0.36013207, b: 0.36013207, a: 1}
   SignalCompletionTMP: {fileID: 3090177340628494046}
   PlanetSelectionSpriteRenderer: {fileID: 2496882839185274318}
   _connectionPrefab: {fileID: 4798461118133471274, guid: 7d974f8a07b4e5a42a11b8e1e887f1c3, type: 3}

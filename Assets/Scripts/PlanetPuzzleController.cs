@@ -26,6 +26,8 @@ public class PlanetPuzzleController : MonoBehaviour
     [SerializeField] private TextMeshPro _planetDesignationTMP;
     [SerializeField] private TextMeshPro _planetNameTMP;
     [SerializeField] private TextMeshPro _puzzleSignalPercentageTMP;
+    [SerializeField] private Color _puzzleCompleteColor;
+    [SerializeField] private Color _puzzleIncompleteColor;
     public PlanetPuzzleData MyPuzzleData;
     public TextMeshPro SignalCompletionTMP;
     public SpriteRenderer PlanetSelectionSpriteRenderer;
@@ -71,6 +73,9 @@ public class PlanetPuzzleController : MonoBehaviour
         
         _planetNameTMP.SetText(MyPuzzleData.PlanetName);
         _planetDesignationTMP.SetText($"DESIGNATION {MyPuzzleData.PlanetDesignation}");
+        
+        _puzzleSignalPercentageTMP.color = new Color(_puzzleIncompleteColor.r, _puzzleIncompleteColor.g, _puzzleIncompleteColor.b, 0);
+        SignalCompletionTMP.color = _puzzleIncompleteColor;
         
         SetUpPuzzle();
     }
@@ -255,8 +260,12 @@ public class PlanetPuzzleController : MonoBehaviour
         }
 
         MyPuzzleData.CompletionPercentage = completionPercentage;
+        Color percentageColour = completionPercentage >= MyPuzzleData.WinThresholdPercentage ? _puzzleCompleteColor : _puzzleIncompleteColor;
+        
         _puzzleSignalPercentageTMP.SetText($"{completionPercentage}% SIGNAL");
         SignalCompletionTMP.SetText($"{completionPercentage}% SIGNAL");
+        _puzzleSignalPercentageTMP.color = percentageColour;
+        SignalCompletionTMP.color = new Color(percentageColour.r, percentageColour.g, percentageColour.b, 0);
         
         MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
@@ -505,11 +514,12 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         float t = 0;
         float totalTime = 1;
+        Color startColor = SignalCompletionTMP.color;
         
         while (t < 1)
         {
             t += Time.deltaTime / totalTime;
-            SignalCompletionTMP.color = new Color(1, 1, 1, 1 - t);
+            SignalCompletionTMP.color = new Color(startColor.r, startColor.g, startColor.b, 1 - t);
             
             yield return null;
         }
@@ -520,11 +530,12 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         float t = 0;
         float totalTime = 1;
+        Color startColor = SignalCompletionTMP.color;
         
         while (t < 1)
         {
             t += Time.deltaTime / totalTime;
-            SignalCompletionTMP.color = new Color(1, 1, 1, t);
+            SignalCompletionTMP.color = new Color(startColor.r, startColor.g, startColor.b, t);
             
             yield return null;
         }
@@ -535,16 +546,20 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         float t = 0;
         float totalTime = 1;
+        Color startingPercentageColor = _puzzleSignalPercentageTMP.color;
         
         while (t < 1)
         {
             t += Time.deltaTime / totalTime;
             Color fadeColor = new Color(1, 1, 1, t);
+            Color percentageFadeColor = new Color(startingPercentageColor.r, startingPercentageColor.g, startingPercentageColor.b, t);
             
             foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
             {
                 tmp.color = fadeColor;
             }
+            
+            _puzzleSignalPercentageTMP.color = percentageFadeColor;
             
             _satelliteButtonSR.color = fadeColor;
             _backButtonSR.color = fadeColor;
@@ -558,16 +573,20 @@ public class PlanetPuzzleController : MonoBehaviour
     {
         float t = 0;
         float totalTime = 1;
+        Color startingPercentageColor = _puzzleSignalPercentageTMP.color;
         
         while (t < 1)
         {
             t += Time.deltaTime / totalTime;
             Color fadeColor = new Color(1, 1, 1, 1 - t);
+            Color percentageFadeColor = new Color(startingPercentageColor.r, startingPercentageColor.g, startingPercentageColor.b, 1 - t);
             
             foreach (TextMeshPro tmp in _fadeablePuzzleTMPs)
             {
                 tmp.color = fadeColor;
             }
+            
+            _puzzleSignalPercentageTMP.color = percentageFadeColor;
             
             _satelliteButtonSR.color = fadeColor;
             _backButtonSR.color = fadeColor;
