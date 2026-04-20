@@ -30,7 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.06, z: 0}
   m_LocalScale: {x: 0.02, y: 0.06, z: 0.02}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8966281804045286671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -142,7 +142,7 @@ Transform:
   m_GameObject: {fileID: 5343329384185422600}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2134, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2307, z: 0}
   m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 8966281804045286671}
   - component: {fileID: 8520163212577053013}
   m_Layer: 0
-  m_Name: RadioTower
+  m_Name: DoubleRadioTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,15 +457,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.6
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -473,7 +473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.16
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -514,7 +514,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ce1e2cc5cc93b5746b015a5ebf7c5c5a, type: 2}
+      objectReference: {fileID: 2100000, guid: c362e0831fe2b6d46ad17819c355781f, type: 2}
     - target: {fileID: 919132149155446097, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_Name
       value: EvenThickerRadioTower

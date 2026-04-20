@@ -42,12 +42,15 @@ public class RadioTowerController : MonoBehaviour
 
     public void StartPulsingSignal()
     {
-        _baseScale = SignalSphere.transform.localScale;
-        _pulsingSignal = true;
-        _baseMaterial = signalRenderer.material;
-        if(_lightMaterial != null)
+        if(!_pulsingSignal)
         {
-            SignalSphere.GetComponent<MeshRenderer>().material = _lightMaterial;
+            _baseScale = SignalSphere.transform.localScale;
+            _pulsingSignal = true;
+            _baseMaterial = signalRenderer.material;
+            if(_lightMaterial != null)
+            {
+                SignalSphere.GetComponent<MeshRenderer>().material = _lightMaterial;
+            }
         }
     }
 
