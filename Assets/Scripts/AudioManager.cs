@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
     {
         {typeof(TestPlanetPuzzleData), "001_E2"},
         {typeof(TestPlanetPuzzleData2), "B2"},
+        {typeof(DoubleTowerPuzzleData), "001_E2"},
+        {typeof(DoubleSatellitePuzzleData), "B2"},
     };
     private Dictionary<Type, PlanetAudio> _planetAudioInstances = new Dictionary<Type, PlanetAudio>();
     
