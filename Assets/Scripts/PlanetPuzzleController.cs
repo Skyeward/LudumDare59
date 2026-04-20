@@ -250,7 +250,7 @@ public class PlanetPuzzleController : MonoBehaviour
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
             DrawConnection(pair, MyPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
             yield return new WaitForSeconds(1.5f);
-            pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal(pair.Distance.ToString("F2"));
+            pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal($"{(pair.Distance*100f).ToString("F2")}km");
             yield return new WaitForSeconds(0.5f);
         }
 
