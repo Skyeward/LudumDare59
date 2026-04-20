@@ -54,7 +54,6 @@ public class PlanetPuzzleController : MonoBehaviour
     private bool _markForReset = false;
     public bool IsShowingSolution = false;
     
-    
     public void Start()
     {
         // if (_placeholderPlanet != null)
@@ -77,7 +76,7 @@ public class PlanetPuzzleController : MonoBehaviour
         
         _planetNameTMP.SetText(MyPuzzleData.PlanetName);
         _planetDesignationTMP.SetText($"DESIGNATION {MyPuzzleData.PlanetDesignation}");
-        _goalPercentageTMP.SetText($"GOAL: {MyPuzzleData.WinThresholdPercentage}%");
+        _goalPercentageTMP.SetText($"GOAL: {MyPuzzleData.GetWinThresholdPercentage()}%");
         
         _puzzleSignalPercentageTMP.color = new Color(_puzzleIncompleteColor.r, _puzzleIncompleteColor.g, _puzzleIncompleteColor.b, 0);
         SignalCompletionTMP.color = _puzzleIncompleteColor;
@@ -298,7 +297,7 @@ public class PlanetPuzzleController : MonoBehaviour
         }
 
         MyPuzzleData.CompletionPercentage = completionPercentage;
-        Color percentageColour = completionPercentage >= MyPuzzleData.WinThresholdPercentage ? _puzzleCompleteColor : _puzzleIncompleteColor;
+        Color percentageColour = completionPercentage >= MyPuzzleData.GetWinThresholdPercentage() ? _puzzleCompleteColor : _puzzleIncompleteColor;
         
         _puzzleSignalPercentageTMP.SetText($"{completionPercentage}% SIGNAL");
         SignalCompletionTMP.SetText($"{completionPercentage}% SIGNAL");

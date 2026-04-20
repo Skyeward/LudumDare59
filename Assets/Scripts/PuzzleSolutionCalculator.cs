@@ -7,7 +7,7 @@ public class PuzzleAnalyzer
     [MenuItem("Tools/Analyze Test Puzzle")]
     public static void Analyze()
     {
-        var data = new DoubleSatellitePuzzleData();
+        var data = new TestPlanetPuzzleData();
 
         ComputeBounds(data, 100000, out float best, out float worst);
 
