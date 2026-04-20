@@ -304,6 +304,8 @@ public class PlanetPuzzleController : MonoBehaviour
         SignalCompletionTMP.SetText($"{completionPercentage}% SIGNAL");
         _puzzleSignalPercentageTMP.color = percentageColour;
         SignalCompletionTMP.color = new Color(percentageColour.r, percentageColour.g, percentageColour.b, 0);
+
+        MySceneController.UpdateOverallCompletionPercentage();
         
         MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
