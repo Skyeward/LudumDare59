@@ -19,7 +19,13 @@ public class AudioManager : MonoBehaviour
         {typeof(Planet1Purple), "001_E2"},
         {typeof(Planet2Seaglass), "B2"},
         {typeof(Planet3Orange), "001_E2"},
-        {typeof(Planet4Pearlescent), "B2"},
+        {typeof(Planet4Red), "B2"},
+        {typeof(Planet5RedBlue), "B2"},
+        {typeof(Planet6Turquoise), "B2"},
+        {typeof(Planet7Blue), "B2"},
+        {typeof(Planet8Plasma), "B2"},
+        {typeof(Planet9YellowRinged), "B2"},
+        {typeof(Planet10GreenRinged), "B2"},
     };
     private Dictionary<Type, PlanetAudio> _planetAudioInstances = new Dictionary<Type, PlanetAudio>();
     
