@@ -1,0 +1,199 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9156712566448117175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7282100614055218549}
+  - component: {fileID: 8787539532935281985}
+  - component: {fileID: 784682118783383030}
+  - component: {fileID: 2512040000939756349}
+  - component: {fileID: 6476440857353285354}
+  m_Layer: 0
+  m_Name: SeaglassGiant
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7282100614055218549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156712566448117175}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.13592799, y: -0.21510673, z: 0.13953507, w: 0.9569653}
+  m_LocalPosition: {x: 0.458, y: -4.31, z: 18.378}
+  m_LocalScale: {x: 1.878, y: 1.878, z: 1.878}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 18.674, y: -23.237, z: 12.719}
+--- !u!33 &8787539532935281985
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156712566448117175}
+  m_Mesh: {fileID: 2865741508147930167, guid: fc4f6b2891735cc4eb1c2fd1a1017b8d, type: 3}
+--- !u!23 &784682118783383030
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156712566448117175}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 2bc37d86730edda47bc335d90b5acee9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2512040000939756349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156712566448117175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61df9695e844a444393410a128b74156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ParallelCascades.ProceduralPlanetGenerationCommon.Runtime::ParallelCascades.ProceduralPlanetGenerationCommon.Runtime.PlanetGlow
+  m_meshRadius: 0.5
+  m_effectScale: 1.5
+  m_densityFalloff: 12.5
+  m_material: {fileID: 2100000, guid: ec71ccb9e57b1894cbcda7fec80c6421, type: 2}
+  m_renderPassEvent: 450
+  m_color: {r: 0.15152144, g: 0.4408039, b: 0.5921993, a: 1}
+--- !u!114 &6476440857353285354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156712566448117175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fffc9f3b13364157be93553d1d5f52f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ParallelCascades.ProceduralPlanetGenerationLite.Runtime::ParallelCascades.ProceduralPlanetGenerationLite.Runtime.ProceduralGasGiantWithStorms
+  m_renderer: {fileID: 784682118783383030}
+  m_colorSeed: 868
+  m_featuresSeed: 618
+  m_gradient:
+    m_colorGradientTexture: {fileID: 2800000, guid: 3d909a4c9dc3817488546aff4c901642, type: 3}
+    m_colorGradient:
+      serializedVersion: 2
+      key0: {r: 0.15696359, g: 0.4566361, b: 0.6134692, a: 1}
+      key1: {r: 0.10970512, g: 0.3283006, b: 0.3939878, a: 1}
+      key2: {r: 0.23224013, g: 0.71396637, b: 0.761931, a: 0}
+      key3: {r: 0.08779696, g: 0.27693743, b: 0.26132947, a: 0}
+      key4: {r: 0.11061014, g: 0.35757244, b: 0.29625154, a: 0}
+      key5: {r: 0.15439153, g: 0.5109753, b: 0.36838838, a: 0}
+      key6: {r: 0.30321282, g: 1.026369, b: 0.63660324, a: 0}
+      key7: {r: 0.169005, g: 0.5845691, b: 0.30734447, a: 0}
+      ctime0: 0
+      ctime1: 9362
+      ctime2: 18724
+      ctime3: 28086
+      ctime4: 37449
+      ctime5: 46811
+      ctime6: 56173
+      ctime7: 65535
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 8
+      m_NumAlphaKeys: 2
+    m_twoColorGradientChanceCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_gasGiantPattern:
+    m_patternScaleRange: {x: 0.05, y: 1}
+    m_planetFlowSpeedRange: {x: 0.001, y: 0.005}
+    m_zScalingRange: {x: 0.005, y: 0.15}
+    m_xScalingRange: {x: 0.005, y: 0.15}
+    m_yGradientScaleRange: {x: 0, y: 1}
+    m_yGradientStrengthRange: {x: 0.01, y: 0.1}
+  m_whorls:
+    m_whorlDensityRange: {x: 2, y: 10}
+    m_whorlSquishRange: {x: 1, y: 2}
+    m_whorlTwistinessRange: {x: 0.5, y: 1}
+    m_whorlSizeToDensityRatioRange: {x: 0.04, y: 0.09}
+  m_fresnel:
+    m_fresnelIntensity: 1
+  m_glow:
+    m_glow: {fileID: 2512040000939756349}

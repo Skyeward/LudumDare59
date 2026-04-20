@@ -56,25 +56,25 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Continent_Scale: 0.6364547
+    - _Continent_Scale: 0.60478675
     - _Detail_Level: 0
     - _Fresnel_Power: 10
-    - _Ice_Caps_Edge_Threshold: 0.20945008
+    - _Ice_Caps_Edge_Threshold: 0.4000364
     - _Ice_Caps_Height: 0.743
     - _OCEAN_ENABLED: 1
-    - _Ocean_Land_Threshold: 0.12083328
+    - _Ocean_Land_Threshold: 0.26656666
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Shallows_Width: 0.1
     - _Surface_Color_Saturation: 0.4
     - _Surface_Noise_Scale: 1
     m_Colors:
-    - _Fresnel_Color: {r: 0.06338453, g: 0.45738482, b: 0.38907704, a: 1}
+    - _Fresnel_Color: {r: 0, g: 0.358728, b: 0.5722934, a: 1}
     - _Ice_Caps_Noise_Params: {r: 8, g: 0.5, b: 2, a: 6}
-    - _Ocean_Color: {r: 0.03509031, g: 0.25321278, b: 0.21539693, a: 1}
+    - _Ocean_Color: {r: 0, g: 0.25921816, b: 0.4135413, a: 1}
     - _Ocean_Depth_Smoothstep: {r: -0.5, g: 1, b: 0, a: 0}
-    - _Randomization_Offset: {r: -644.678, g: 294.33344, b: 518.1254, a: 0}
-    - _Shallows_Color: {r: 0.06338454, g: 0.45738482, b: 0.38907707, a: 1}
+    - _Randomization_Offset: {r: -405.53357, g: 175.127, b: -803.5848, a: 0}
+    - _Shallows_Color: {r: 0, g: 0.35872802, b: 0.5722934, a: 1}
     - _Smoothness_Smoothstep: {r: 1, g: -1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
