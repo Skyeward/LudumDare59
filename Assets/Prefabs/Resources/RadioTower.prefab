@@ -511,6 +511,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ce1e2cc5cc93b5746b015a5ebf7c5c5a, type: 2}
     - target: {fileID: 919132149155446097, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_Name
       value: EvenThickerRadioTower
