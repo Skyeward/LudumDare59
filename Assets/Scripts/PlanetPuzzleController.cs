@@ -26,6 +26,7 @@ public class PlanetPuzzleController : MonoBehaviour
     [SerializeField] private TextMeshPro _planetDesignationTMP;
     [SerializeField] private TextMeshPro _planetNameTMP;
     [SerializeField] private TextMeshPro _puzzleSignalPercentageTMP;
+    [SerializeField] private TextMeshPro _goalPercentageTMP;
     [SerializeField] private Color _puzzleCompleteColor;
     [SerializeField] private Color _puzzleIncompleteColor;
     public PlanetPuzzleData MyPuzzleData;
@@ -73,6 +74,7 @@ public class PlanetPuzzleController : MonoBehaviour
         
         _planetNameTMP.SetText(MyPuzzleData.PlanetName);
         _planetDesignationTMP.SetText($"DESIGNATION {MyPuzzleData.PlanetDesignation}");
+        _goalPercentageTMP.SetText($"GOAL: {MyPuzzleData.WinThresholdPercentage}%");
         
         _puzzleSignalPercentageTMP.color = new Color(_puzzleIncompleteColor.r, _puzzleIncompleteColor.g, _puzzleIncompleteColor.b, 0);
         SignalCompletionTMP.color = _puzzleIncompleteColor;

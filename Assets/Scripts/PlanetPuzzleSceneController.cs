@@ -19,7 +19,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private List<Vector3> _cameraPositionsMenuStages = new List<Vector3>()
     {
-        new Vector3(2.54f, -0.88f, -7.74f)
+        new Vector3(2.45f, -0.88f, -7.74f)
     };
     public GameThreadStage CurrentGameThreadStage;
     
