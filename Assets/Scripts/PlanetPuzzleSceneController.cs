@@ -74,6 +74,10 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                             _currentPlanetPuzzleController.ShowSolution(puzzleCompletion);
                             _gameProgress.PlanetPuzzles = _planetPuzzleControllers.Select(controller => controller.MyPuzzleData).ToList();
                         }
+                        else
+                        {
+                            MyAudioManager.PlaySatelliteObstruction();
+                        }
                     }
                 }
             }
