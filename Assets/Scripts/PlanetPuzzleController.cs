@@ -270,6 +270,8 @@ public class PlanetPuzzleController : MonoBehaviour
         _puzzleSignalPercentageTMP.color = percentageColour;
         SignalCompletionTMP.color = new Color(percentageColour.r, percentageColour.g, percentageColour.b, 0);
         
+        MySceneController.MyAudioManager.UpdatePuzzleSolution(MyPuzzleData);
+        
         MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
 

@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   _solarWindAS: {fileID: 1918443195}
+  _planetAudioPrefab: {fileID: 4000483164504860182, guid: fbfef09d92b25e14c926dc3990c501ab, type: 3}
 --- !u!1 &458574029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f7a87f930cac894d8704182bcd4aa7d, type: 3}
@@ -258,7 +259,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioManager: {fileID: 135142805}
+  MyAudioManager: {fileID: 135142805}
   CurrentGameThreadStage: 0
 --- !u!4 &752336905
 Transform:

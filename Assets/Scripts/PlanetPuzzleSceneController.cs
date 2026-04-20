@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,7 +11,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     [SerializeField] private LayerMask _planetLayerMask;
     [SerializeField] private LayerMask _puzzleButtonLayerMask;
     [SerializeField] private AnimationCurve _cameraSlideCurve;
-    [SerializeField] private AudioManager _audioManager;
+    public AudioManager MyAudioManager;
     private PlanetPuzzleController _currentPlanetPuzzleController;
     
     private bool _isRotatingSatelliteOrb = false;
@@ -30,7 +31,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
         
-        _audioManager.EnterMainMenu();
+        MyAudioManager.EnterMainMenu();
     }
     
     
@@ -54,8 +55,9 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                 {
                     if (button.MyButtonType == ButtonType.LeavePuzzle)
                     {
+                        MyAudioManager.EnterMainMenu();
+                        MyAudioManager.ExitPuzzle(_planetPuzzleControllers.Select(puzzCon => puzzCon.MyPuzzleData).ToList());
                         StartCoroutine(LeavePuzzle(button.MyController));
-                        _audioManager.EnterMainMenu();
                     }
                     else if (button.MyButtonType == ButtonType.Satellite)
                     {
@@ -200,7 +202,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && hoveredPlanetPuzzleController != null)
         {
             StartCoroutine(SelectPlanetPuzzle(hoveredPlanetPuzzleController));
-            _audioManager.ExitMainMenu();
+            MyAudioManager.ExitMainMenu();
+            MyAudioManager.EnterPuzzle(hoveredPlanetPuzzleController.MyPuzzleData);
         }
     }
     
