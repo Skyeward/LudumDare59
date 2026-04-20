@@ -14,6 +14,7 @@ public class PlanetPuzzleData
     public List<SphereCoordinate> DoubleRadioTowerCoordinates;
     public List<SphereCoordinate> DoubleSatelliteCoordinates;
     public int CompletionPercentage;
+    public int WinThresholdPercentage;
     public float BestSolutionDistance;
     public float WorstSolutionDistance;
 }
@@ -45,6 +46,7 @@ public class TestPlanetPuzzleData : PlanetPuzzleData
         PlanetDesignation = "A1GD-M";
         PlanetRadius = 0.98f;
         CameraDistance = 4.5f;
+        WinThresholdPercentage = 95;
         IsRandomizingStartingSatelliteRotation = false;
         RadioTowerCoordinates = new List<SphereCoordinate>()
         {
@@ -69,6 +71,7 @@ public class TestPlanetPuzzleData2 : PlanetPuzzleData
         PlanetDesignation = "A1PD-N";
         PlanetRadius = 1.1f;
         CameraDistance = 4.7f;
+        WinThresholdPercentage = 90;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 1.14f;
         WorstSolutionDistance = 5.45f;
