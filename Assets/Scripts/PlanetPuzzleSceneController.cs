@@ -24,7 +24,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         new Vector3(2.45f, -0.88f, -5.26f),
         new Vector3(2.45f, -1.9f, -15.19f),
         new Vector3(5.2f, -2.44f, -22.57f),
-        new Vector3(3.95f, -2.9f, -27.54f),
+        new Vector3(4f, -3.5f, -30f),
     };
 
     public GameThreadStage CurrentGameThreadStage;
@@ -34,7 +34,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void Start()
     {
-        Camera.main.transform.position = _cameraPositionsMenuStages[3];
+        Camera.main.transform.position = _cameraPositionsMenuStages[0];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
         
         _gameProgress = new GameProgress();
