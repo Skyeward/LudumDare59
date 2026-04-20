@@ -15,7 +15,7 @@ public class PlanetPuzzleData
     public List<SphereCoordinate> DoubleRadioTowerCoordinates;
     public List<SphereCoordinate> DoubleSatelliteCoordinates;
     public int CompletionPercentage = 0;
-    private int _winThresholdPercentage;
+    public int WinThresholdPercentage;
     public float BestSolutionDistance;
     public float WorstSolutionDistance;
     public Color MeshColour;
@@ -23,18 +23,18 @@ public class PlanetPuzzleData
 
     public void SetWinThresholdPercentage(int percentage)
     {
-        _winThresholdPercentage = percentage;
+        WinThresholdPercentage = percentage;
     }
 
     public int GetWinThresholdPercentage()
     {
-        return _winThresholdPercentage;
+        return WinThresholdPercentage;
     }
 
 
     public bool Complete()
     {
-        return CompletionPercentage >= _winThresholdPercentage;
+        return CompletionPercentage >= WinThresholdPercentage;
     }
 }
 

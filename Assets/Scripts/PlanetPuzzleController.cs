@@ -306,6 +306,8 @@ public class PlanetPuzzleController : MonoBehaviour
 
         MySceneController.UpdateOverallCompletionPercentage();
         
+        MySceneController.MyAudioManager.UpdatePuzzleSolution(MyPuzzleData);
+        
         MySceneController.CurrentGameThreadStage = GameThreadStage.SolvingPuzzle;
     }
 
