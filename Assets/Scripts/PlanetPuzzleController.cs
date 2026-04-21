@@ -292,7 +292,7 @@ public class PlanetPuzzleController : MonoBehaviour
             pair.Tower.GetComponentInChildren<RadioTowerController>().StartPulsingSignal();
             Debug.Log($"Tower at {pair.Tower.transform.position} is paired with Satellite at {pair.Satellite.transform.position} (Distance: {pair.Distance})");
             DrawConnection(pair, MyPuzzleData.PlanetRadius * 2f * CurrentAssignment.Count);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.5f);
             pair.Satellite.GetComponentInChildren<SatelliteController>().StartPulsingSignal($"{(pair.Distance*100f).ToString("F2")}km");
             yield return new WaitForSeconds(0.5f);
         }
@@ -417,7 +417,7 @@ public class PlanetPuzzleController : MonoBehaviour
             );
 
 
-            float duration = Mathf.Lerp(0.5f, 2.0f, c.Distance / c.MaxDistance);
+            float duration = Mathf.Lerp(0.5f, 1.0f, c.Distance / c.MaxDistance);
             c.Progress = Mathf.Clamp01(c.Progress + Time.deltaTime / duration);
 
             float eased = Mathf.SmoothStep(0f, 1f, c.Progress);
