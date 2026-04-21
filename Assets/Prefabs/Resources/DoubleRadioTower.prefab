@@ -514,7 +514,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: c362e0831fe2b6d46ad17819c355781f, type: 2}
+      objectReference: {fileID: 2100000, guid: fee9d092f5be82f4fb3ac250cd35bc79, type: 2}
     - target: {fileID: 919132149155446097, guid: 736e070eae7d83e419667ac5254731a4, type: 3}
       propertyPath: m_Name
       value: EvenThickerRadioTower
