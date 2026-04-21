@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -11,6 +13,11 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     [SerializeField] private LayerMask _planetLayerMask;
     [SerializeField] private LayerMask _puzzleButtonLayerMask;
     [SerializeField] private AnimationCurve _cameraSlideCurve;
+    [SerializeField] private CanvasGroup _overallCG;
+    [SerializeField] private CanvasGroup _logoCG;
+    [SerializeField] private CanvasGroup _pressAnyToExitCG;
+    [SerializeField] private AudioSource _dogToboggan;
+    public TextMeshProUGUI OverallTMP;
     public AudioManager MyAudioManager;
     private PlanetPuzzleController _currentPlanetPuzzleController;
     
@@ -65,6 +72,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                         MyAudioManager.EnterMainMenu();
                         MyAudioManager.ExitPuzzle(_planetPuzzleControllers.Select(puzzCon => puzzCon.MyPuzzleData).ToList());
                         StartCoroutine(LeavePuzzle(button.MyController));
+                        StartCoroutine(FadeInOverall());
                     }
                     else if (button.MyButtonType == ButtonType.Satellite)
                     {
@@ -119,6 +127,13 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     {
         _gameProgress.UpdateOverallCompletionPercentage();
         Debug.Log($"Overall completion: {_gameProgress.OverallCompletionPercentage}%");
+        
+        OverallTMP.SetText($"Overall: {_gameProgress.OverallCompletionPercentage}%   <i><size=28>(GOAL: 90%)");
+        
+        if (_gameProgress.OverallCompletionPercentage >= 90)
+        {
+            StartCoroutine(ShowWin());
+        }
     }
     
     
@@ -238,6 +253,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             StartCoroutine(SelectPlanetPuzzle(hoveredPlanetPuzzleController));
             MyAudioManager.ExitMainMenu();
             MyAudioManager.EnterPuzzle(hoveredPlanetPuzzleController.MyPuzzleData);
+            
+            StartCoroutine(FadeOutOverall());
         }
     }
     
@@ -354,7 +371,97 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             return Math.Max(3, previousMenuCameraIndex);
         }
     }
+    
+    
+    private IEnumerator FadeOutOverall()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            
+            _overallCG.alpha = 1 - t;
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeInOverall()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            
+            _overallCG.alpha = t;
+            
+            yield return null;
+        }
+    }
 
+
+    private IEnumerator ShowWin()
+    {
+        CurrentGameThreadStage = GameThreadStage.InteractionBlocked;
+        
+        yield return new WaitForSeconds(1f);
+        
+        StartCoroutine(FadeOutOverall());
+        
+        yield return StartCoroutine(FadeInLogo());
+        
+        yield return new WaitForSeconds(2f);
+        
+        _dogToboggan.Play();
+        
+        yield return new WaitForSeconds(3f);
+        
+        yield return StartCoroutine(FadeInPressAnyToExit());
+        
+        while (!Input.anyKeyDown && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
+        {
+            yield return null;
+        }
+        
+        Application.Quit();
+    }
+    
+    
+    private IEnumerator FadeInLogo()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            
+            _logoCG.alpha = t;
+            
+            yield return null;
+        }
+    }
+    
+    
+    private IEnumerator FadeInPressAnyToExit()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            
+            _pressAnyToExitCG.alpha = t;
+            
+            yield return null;
+        }
+    }
 }
 
 public enum GameThreadStage
