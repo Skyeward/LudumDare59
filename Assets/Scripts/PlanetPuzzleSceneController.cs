@@ -34,7 +34,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void Start()
     {
-        Camera.main.transform.position = _cameraPositionsMenuStages[3];
+        Camera.main.transform.position = _cameraPositionsMenuStages[0];
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
         
         _gameProgress = new GameProgress();

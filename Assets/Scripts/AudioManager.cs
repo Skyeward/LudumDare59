@@ -132,10 +132,11 @@ public class AudioManager : MonoBehaviour
             GameObject newAudioInstance = Instantiate(_planetAudioPrefab);
             newAudioInstance.transform.parent = transform;
             _planetAudioInstances[puzzleType] = newAudioInstance.GetComponent<PlanetAudio>();
+            
+            newAudioInstance.GetComponent<PlanetAudio>().SetPlanetAudioClip(Resources.Load($"PlanetAudio/{_planetClips[puzzleData.GetType()]}") as AudioClip);
         }
         
         PlanetAudio planetAudio = _planetAudioInstances[puzzleType];
-        planetAudio.SetPlanetAudioClip(Resources.Load($"PlanetAudio/{_planetClips[puzzleData.GetType()]}") as AudioClip);
         
         float totalVolume = 0.4f;
         

@@ -61,8 +61,8 @@ public class Planet1Purple : PlanetPuzzleData
     public Planet1Purple()
     {
         PlanetPrefabName = "PurpleMoon";
-        PlanetName = "The Pale Bluish Green Dot";
-        PlanetDesignation = "A1GD-M";
+        PlanetName = "The Amethyst";
+        PlanetDesignation = "A1138-M";
         PlanetRadius = 0.98f;
         CameraDistance = 4.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -89,8 +89,8 @@ public class Planet2Seaglass : PlanetPuzzleData
     public Planet2Seaglass()
     {
         PlanetPrefabName = "SeaglassGiant";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "The Glass Sea";
+        PlanetDesignation = "B4278-J";
         PlanetRadius = 1.17f;
         CameraDistance = 5.65f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -119,8 +119,8 @@ public class Planet3Orange : PlanetPuzzleData
     public Planet3Orange()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "Sudosol";
+        PlanetDesignation = "C5156-F";
         PlanetRadius = 0.5f;
         CameraDistance = 3.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -157,8 +157,8 @@ public class Planet4Red : PlanetPuzzleData
     public Planet4Red()
     {
         PlanetPrefabName = "Terracotta";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "Neocotta";
+        PlanetDesignation = "D9173-N";
         PlanetRadius = 0.5f;
         CameraDistance = 3.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -190,8 +190,8 @@ public class Planet5RedBlue : PlanetPuzzleData
     public Planet5RedBlue()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "The Herald";
+        PlanetDesignation = "E0545-R";
         PlanetRadius = 1.5f;
         CameraDistance = 5.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -225,8 +225,8 @@ public class Planet6Turquoise : PlanetPuzzleData
     public Planet6Turquoise()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "Big Blue";
+        PlanetDesignation = "F5340-X";
         PlanetRadius = 0.7f;
         CameraDistance = 4.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -261,8 +261,8 @@ public class Planet7Blue : PlanetPuzzleData
     public Planet7Blue()
         {
             PlanetPrefabName = "FireBall";
-            PlanetName = "The Test";
-            PlanetDesignation = "A1PD-N";
+            PlanetName = "Sacre";
+            PlanetDesignation = "G8136-B";
             PlanetRadius = 0.6f;
             CameraDistance = 3.5f;
             IsRandomizingStartingSatelliteRotation = false;
@@ -299,8 +299,8 @@ public class Planet8Plasma : PlanetPuzzleData
     public Planet8Plasma()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "The Shimmer";
+        PlanetDesignation = "H4771-A";
         PlanetRadius = 0.2f;
         CameraDistance = 2.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -336,8 +336,8 @@ public class Planet9YellowRinged : PlanetPuzzleData
     public Planet9YellowRinged()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "The Wellspring";
+        PlanetDesignation = "J6395-G";
         PlanetRadius = 0.45f;
         CameraDistance = 4.5f;
         IsRandomizingStartingSatelliteRotation = false;
@@ -371,8 +371,8 @@ public class Planet10GreenRinged : PlanetPuzzleData
     public Planet10GreenRinged()
     {
         PlanetPrefabName = "FireBall";
-        PlanetName = "The Test";
-        PlanetDesignation = "A1PD-N";
+        PlanetName = "The Sylvan Terminus";
+        PlanetDesignation = "K1221-C";
         PlanetRadius = 0.3f;
         CameraDistance = 3f;
         IsRandomizingStartingSatelliteRotation = false;
