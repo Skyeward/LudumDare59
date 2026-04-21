@@ -45,6 +45,15 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Completinging puzzle for testing purposes");
+            foreach (PlanetPuzzleController controller in _planetPuzzleControllers)
+            {
+                controller.MyPuzzleData.CompletionPercentage = 100;
+            }
+        }
+
         if (CurrentGameThreadStage == GameThreadStage.WaitingForPlanetSelection)
         {
             CheckPlanetRaycasts();
@@ -97,6 +106,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
                 _currentPlanetPuzzleController.RotateSatelliteOrb();
                 _currentPlanetPuzzleController.RotatePuzzle();
             }
+
+
         }
     }
     
