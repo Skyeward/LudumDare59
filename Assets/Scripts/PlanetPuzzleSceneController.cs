@@ -54,19 +54,23 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     
     private IEnumerator FadeInMenu()
     {
-        float t = 0;
-        float totalTime = 1;
-        
-        while (t < 1)
+        if (_fadeInCG != null)
         {
-            t += Time.deltaTime / totalTime;
+            float t = 0;
+            float totalTime = 1;
             
-            _fadeInCG.alpha = 1 - t;
+            while (t < 1)
+            {
+                t += Time.deltaTime / totalTime;
+                
+                _fadeInCG.alpha = 1 - t;
+                
+                yield return null;
+            }
             
-            yield return null;
+            _fadeInCG.gameObject.SetActive(false);
         }
         
-        _fadeInCG.gameObject.SetActive(false);
         CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
     
@@ -356,7 +360,19 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         // slide from old to new position here?? 
         yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
         
-        if (_gameProgress.OverallCompletionPercentage >= 90)
+        bool allComplete = true;
+        
+        foreach (PlanetPuzzleController con in _planetPuzzleControllers)
+        {
+            if (con.MyPuzzleData.CompletionPercentage < con.MyPuzzleData.WinThresholdPercentage)
+            {
+                allComplete = false;
+                
+                break;
+            }
+        }
+        
+        if (allComplete && _gameProgress.OverallCompletionPercentage >= 90)
         {
             StartCoroutine(ShowWin());
         }
