@@ -16,6 +16,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     [SerializeField] private CanvasGroup _overallCG;
     [SerializeField] private CanvasGroup _logoCG;
     [SerializeField] private CanvasGroup _pressAnyToExitCG;
+    [SerializeField] private CanvasGroup _fadeInCG;
     [SerializeField] private AudioSource _dogToboggan;
     public TextMeshProUGUI OverallTMP;
     public AudioManager MyAudioManager;
@@ -42,11 +43,31 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     private void Start()
     {
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
-        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
-        
+        CurrentGameThreadStage = GameThreadStage.InteractionBlocked;
         _gameProgress = new GameProgress();
         
         MyAudioManager.EnterMainMenu();
+        
+        StartCoroutine(FadeInMenu());
+    }
+    
+    
+    private IEnumerator FadeInMenu()
+    {
+        float t = 0;
+        float totalTime = 1;
+        
+        while (t < 1)
+        {
+            t += Time.deltaTime / totalTime;
+            
+            _fadeInCG.alpha = 1 - t;
+            
+            yield return null;
+        }
+        
+        _fadeInCG.gameObject.SetActive(false);
+        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
     
     
