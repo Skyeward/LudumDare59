@@ -441,6 +441,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
             yield return null;
         }
         
+        Debug.Log("Quitting...");
+        
         Application.Quit();
     }
     
