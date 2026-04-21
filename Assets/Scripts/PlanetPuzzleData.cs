@@ -193,7 +193,7 @@ public class Planet5RedBlue : PlanetPuzzleData
         PlanetName = "The Herald";
         PlanetDesignation = "E0545-R";
         PlanetRadius = 1.5f;
-        CameraDistance = 5.5f;
+        CameraDistance = 6.5f;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 1.9f;
         WorstSolutionDistance = 8.04f;
@@ -263,8 +263,8 @@ public class Planet7Blue : PlanetPuzzleData
             PlanetPrefabName = "FireBall";
             PlanetName = "Sacre";
             PlanetDesignation = "G8136-B";
-            PlanetRadius = 0.6f;
-            CameraDistance = 3.5f;
+            PlanetRadius = 0.8f;
+            CameraDistance = 4.5f;
             IsRandomizingStartingSatelliteRotation = false;
             BestSolutionDistance = 4.33f;
             WorstSolutionDistance = 8.97f;
@@ -301,8 +301,8 @@ public class Planet8Plasma : PlanetPuzzleData
         PlanetPrefabName = "FireBall";
         PlanetName = "The Shimmer";
         PlanetDesignation = "H4771-A";
-        PlanetRadius = 0.2f;
-        CameraDistance = 2.5f;
+        PlanetRadius = 0.95f;
+        CameraDistance = 4.5f;
         IsRandomizingStartingSatelliteRotation = false;
         BestSolutionDistance = 2.8f;
         WorstSolutionDistance = 8.46f;
