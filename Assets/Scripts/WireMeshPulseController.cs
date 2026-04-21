@@ -34,12 +34,12 @@ public class WireMeshPulseController : MonoBehaviour
     void Update()
     {
         // Press SPACE to trigger a new pulse
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            sourceNode = Random.Range(0, vertices.Length);
-            ComputeDistances(sourceNode);
-            ApplyToMesh();
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     sourceNode = Random.Range(0, vertices.Length);
+        //     ComputeDistances(sourceNode);
+        //     ApplyToMesh();
+        // }
 
         // Optional: animate pulse origin over time
         timer += Time.deltaTime;
