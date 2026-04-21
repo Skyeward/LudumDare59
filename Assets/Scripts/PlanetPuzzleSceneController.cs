@@ -16,6 +16,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     [SerializeField] private CanvasGroup _overallCG;
     [SerializeField] private CanvasGroup _logoCG;
     [SerializeField] private CanvasGroup _pressAnyToExitCG;
+    [SerializeField] private CanvasGroup _fadeInCG;
     [SerializeField] private AudioSource _dogToboggan;
     public TextMeshProUGUI OverallTMP;
     public AudioManager MyAudioManager;
@@ -42,11 +43,35 @@ public class PlanetPuzzleSceneController : MonoBehaviour
     private void Start()
     {
         Camera.main.transform.position = _cameraPositionsMenuStages[0];
-        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
-        
+        CurrentGameThreadStage = GameThreadStage.InteractionBlocked;
         _gameProgress = new GameProgress();
         
         MyAudioManager.EnterMainMenu();
+        
+        StartCoroutine(FadeInMenu());
+    }
+    
+    
+    private IEnumerator FadeInMenu()
+    {
+        if (_fadeInCG != null)
+        {
+            float t = 0;
+            float totalTime = 1;
+            
+            while (t < 1)
+            {
+                t += Time.deltaTime / totalTime;
+                
+                _fadeInCG.alpha = 1 - t;
+                
+                yield return null;
+            }
+            
+            _fadeInCG.gameObject.SetActive(false);
+        }
+        
+        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
     }
     
     
@@ -335,7 +360,19 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         // slide from old to new position here?? 
         yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
         
-        if (_gameProgress.OverallCompletionPercentage >= 90)
+        bool allComplete = true;
+        
+        foreach (PlanetPuzzleController con in _planetPuzzleControllers)
+        {
+            if (con.MyPuzzleData.CompletionPercentage < con.MyPuzzleData.WinThresholdPercentage)
+            {
+                allComplete = false;
+                
+                break;
+            }
+        }
+        
+        if (allComplete && _gameProgress.OverallCompletionPercentage >= 90)
         {
             StartCoroutine(ShowWin());
         }
@@ -440,6 +477,8 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         {
             yield return null;
         }
+        
+        Debug.Log("Quitting...");
         
         Application.Quit();
     }
