@@ -140,11 +140,6 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         Debug.Log($"Overall completion: {_gameProgress.OverallCompletionPercentage}%");
         
         OverallTMP.SetText($"Overall: {_gameProgress.OverallCompletionPercentage}%   <i><size=28>(GOAL: 90%)");
-        
-        if (_gameProgress.OverallCompletionPercentage >= 90)
-        {
-            StartCoroutine(ShowWin());
-        }
     }
     
     
@@ -340,7 +335,14 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         // slide from old to new position here?? 
         yield return StartCoroutine(SlideCamera(_cameraPositionsMenuStages[GetMenuCameraIndex()]));
         
-        CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        if (_gameProgress.OverallCompletionPercentage >= 90)
+        {
+            StartCoroutine(ShowWin());
+        }
+        else
+        {
+            CurrentGameThreadStage = GameThreadStage.WaitingForPlanetSelection;
+        }
     }
 
 
@@ -430,7 +432,7 @@ public class PlanetPuzzleSceneController : MonoBehaviour
         
         _dogToboggan.Play();
         
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
         
         yield return StartCoroutine(FadeInPressAnyToExit());
         
